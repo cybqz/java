@@ -4,7 +4,9 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
+Vue.prototype.jsonp = jsonp
 Vue.config.productionTip = false
+Vue.prototype.URL_PREFIX = 'http://localhost:9090'
 
 /* eslint-disable no-new */
 new Vue({
