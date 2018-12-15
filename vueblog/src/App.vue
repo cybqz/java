@@ -1,13 +1,37 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+    <div v-if="$route.meta.keepAlive">
+      <header>
+        <keep-alive>
+        <!-- 导航栏 -->
+          <header-nav></header-nav>
+        </keep-alive>
+      </header>
+    <div>
+      <aside width="250px">
+        <!-- 侧边栏 -->
+        <keep-alive>
+          <left></left>
+        </keep-alive>
+      </aside>
+      <div>
+         <router-view></router-view>
+      </div>
+    </div>
+    </div>
+    <router-view v-if="!$route.meta.keepAlive"></router-view>
   </div>
 </template>
 
 <script>
+import header from './components/nav/Header.vue';
+import left from './components/nav/Left.vue';
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+        headerNav: header,
+        left: left
+      }
 }
 </script>
 

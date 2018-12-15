@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import jsonp from 'jsonp'
 
 Vue.prototype.jsonp = jsonp
 Vue.config.productionTip = false
