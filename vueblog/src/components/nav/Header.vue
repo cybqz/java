@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="header">
 	This is header
   </div>
  </template>
@@ -7,5 +7,5 @@
   
 </script>
 <style scoped>
-  
+	.header{border:red solid 1px};
 </style>

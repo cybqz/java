@@ -7,14 +7,14 @@
           <header-nav></header-nav>
         </keep-alive>
       </header>
-    <div>
-      <aside width="250px">
+    <div class="clearfix">
+      <aside class="aside">
         <!-- 侧边栏 -->
         <keep-alive>
           <left></left>
         </keep-alive>
       </aside>
-      <div>
+      <div class="containt">
          <router-view></router-view>
       </div>
     </div>
@@ -42,6 +42,23 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+.clearfix:{zoom:1;}
+.clearfix:after{
+	display: block;
+	content: ' ';
+	clear: both;
+	line-height: 0;
+	visibility: hidden;
+}
+.aside{
+	border:red solid 1px;
+	width:300px;
+	float:left;
+}
+.containt{
+	border:green solid 1px;
+	width:calc(100% - 300px);
+	float:right;
 }
 </style>

@@ -1,10 +1,6 @@
 <template>
   <div class="hello">
-    This is test1!
-    <div>
-		<router-link to="/test1/test1_1">test1_1</router-link>
-		<router-view></router-view>
-  	</div>
+    This is test1_1!
   </div>
 </template>
 
