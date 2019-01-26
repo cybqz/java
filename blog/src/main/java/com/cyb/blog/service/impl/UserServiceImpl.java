@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserServices {
 
 	public int insert(User record) {
 		// TODO Auto-generated method stub
-		return 0;
+		return userMapper.insert(record);
 	}
 
 	public int insertSelective(User record) {
