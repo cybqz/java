@@ -9,7 +9,7 @@ import com.cyb.blog.domain.UserExample;
 import com.cyb.blog.service.UserServices;
 
 @Service(value="userSerivces")
-public class UserServiceImpl implements UserServices {
+public class UserServicesImpl implements UserServices {
 	
 	@Resource
 	private UserMapper userMapper;
