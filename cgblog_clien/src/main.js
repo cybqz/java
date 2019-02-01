@@ -14,7 +14,7 @@ axios.defaults.headers.post['Content-Type']= 'application/x-www-form-urlencoded;
 axios.defaults.baseURL = 'http://192.168.1.113:9090/blog/';// 配置接口地址
 axios.defaults.withCredentials = false;
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 
 Vue.use(iView) //使用iview组件 

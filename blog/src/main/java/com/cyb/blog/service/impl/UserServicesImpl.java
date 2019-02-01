@@ -30,7 +30,6 @@ public class UserServicesImpl implements UserServices {
 	}
 
 	public int insert(User record) {
-		// TODO Auto-generated method stub
 		return userMapper.insert(record);
 	}
 
