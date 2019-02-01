@@ -3,35 +3,34 @@
 		<!-- 点趣模块 -->
 		<div class="modelBox"></div>
 		<div class="shadow ptb20">
-			<div class="intereting-wrap" v-for="item in data">
-				<div class="containDiv">
-					<div :title="item.title" class="title pointer eclipes1">
-						{{item.title}}
-					</div>
-					<div class="msg eclipes2">
-						{{item.containt}}
-					</div>
-					<div class="about">
-						<div class="spaceR">
-							<span class="left">
-								作者：<span class="organe pointer">{{item.author}}</span>
-							</span>
-							<span class="right">
-								<span><Icon class='icon gost' type="ios-text" />{{item.commentCount}}</span>
-								<span><Icon class='icon red' type="ios-heart" />{{item.fablousCount}}</span>
-							</span>
+			<Scroll :on-reach-bottom="handleReachBottom">
+				<div class="intereting-wrap" v-for="item in data">
+					<div class="containDiv">
+						<div :title="item.title" class="title pointer eclipes1">
+							{{item.title}}
 						</div>
-						<div v-if='true' class="space">
-							
+						<div class="msg eclipes2">
+							{{item.containt}}
 						</div>
+						<div class="about">
+							<div class="spaceR">
+								<span class="left">
+									作者：<span class="organe pointer">{{item.author}}</span>
+								</span>
+								<span class="right">
+									<span><Icon class='icon gost' type="ios-text" />{{item.commentCount}}</span>
+									<span><Icon class='icon red' type="ios-heart" />{{item.fablousCount}}</span>
+								</span>
+							</div>
+							<div v-if='true' class="space">
+								
+							</div>
+						</div>
+					</div>
+					<div v-if='true' class="imgDiv pointer">
 					</div>
 				</div>
-				<div v-if='true' class="imgDiv pointer">
-				</div>
-			</div>
-			<div class="page-wrap">
-				<Page :total="tatal" :page-size='pageSize' :current="pageNo" @on-change='changePage()' size="small" show-total />
-			</div>
+			</Scroll>
 		</div>
 		
 	</div>
@@ -43,9 +42,10 @@ export default {
   data () {
     return {
 			tatal:0,
-			pageSize:1,
+			pageSize:10,
 			pageNo:1,
 			data:[],
+			continueGetData:true
     }
   },
   watch:{
@@ -55,24 +55,41 @@ export default {
 			this.getData();
 		},
 		getData(){
-			let url = this.$axios.defaults.baseURL + "blogController/getList";
-			let param = {
-			};
-			this.$axios.get(url, {params: param})
-			.then((response) => {
-				let status = response.status;
-				let data = response.data;
-				if( status == 200){
-					this.data = data.pageDatas;
-				}else{
-					
-				}
-					
-					console.log(response)
-			}).catch((error) => {
-					console.log(error)
-			})
+			if(this.continueGetData){
+				let url = this.$axios.defaults.baseURL + "blogController/getList";
+				let param = {
+					pageIndex:this.pageNo
+				};
+				console.log(param);
+				//this.$axios.post(url,{param:param})
+				this.$axios({method:'post', url:url, data:this.$qs.stringify(param)})
+				.then((response) => {
+					let status = response.status;
+					let data = response.data;
+					if( status == 200){
+						console.log(data);
+						this.continueGetData = data.pageIndex<=data.pageCount;
+						for(var i in data.pageDatas){
+							this.data.push(data.pageDatas[i]);
+						}
+						console.log(this.data.lenght);
+					}else{
+						console.log("getData error!");
+					}
+				}).catch((error) => {
+						console.log(error)
+				})
+			}else{
+				$.message({
+					message: '已经到底啦！',
+					type: 'success',
+				});
+			}
 		},
+		handleReachBottom () {
+			this.pageNo += 1;
+			this.getData();
+        }
   },
 	mounted() {
 		this.getData();
