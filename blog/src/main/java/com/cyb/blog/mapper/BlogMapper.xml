@@ -108,6 +108,9 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
+    <if test="pagenation != null">
+        limit #{pagenation.pageSize} offset #{pagenation.offset}
+    </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--

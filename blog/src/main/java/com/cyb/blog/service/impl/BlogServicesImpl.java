@@ -75,16 +75,19 @@ public class BlogServicesImpl implements BlogServices {
 	}
 
 	public Pagenation getList(Blog blog, Pagenation pagenation) {
-		List<BlogVO> result = new ArrayList<BlogVO>();
 		BlogExample example = new BlogExample();
-		List<Blog> list = blogMapper.selectByExample(example);
-		for(Blog b : list) {
-			BlogVO blogVO = BlogVO.toBlog(b);
-			result.add(blogVO);
-		}
 		long count = blogMapper.countByExample(example);
-		pagenation.setPageCount(count);
-		pagenation.setPageDatas(result);
+		pagenation.setDataCount(count);
+		if(count > 0 && pagenation.searcha) {
+			List<BlogVO> result = new ArrayList<BlogVO>();
+			example.setPagenation(pagenation);
+			List<Blog> list = blogMapper.selectByExample(example);
+			for(Blog b : list) {
+				BlogVO blogVO = BlogVO.toBlog(b);
+				result.add(blogVO);
+			}
+			pagenation.setPageDatas(result);
+		}
 		return pagenation;
 	}
 }
