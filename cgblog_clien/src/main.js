@@ -4,12 +4,14 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import iView from 'iview' // 引入iview依赖
+import Message from 'iview'
 import 'iview/dist/styles/iview.css' // 引入iview css样式
 import axios from 'axios' // 1、在这里引入axios
 import qs from 'qs' //解决参数无法传递
 
 Vue.prototype.$qs = qs;
 Vue.prototype.$axios = axios;   // 2、在vue中使用axios
+Vue.prototype.$Message = Message
 
 axios.defaults.timeout = 5000;// 在超时前，所有请求都会等待 5 秒
 axios.defaults.headers.post['Content-Type']= 'application/x-www-form-urlencoded';// 配置请求头

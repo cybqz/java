@@ -3,7 +3,7 @@
 		<!-- 点趣模块 -->
 		<div class="modelBox"></div>
 		<div class="shadow ptb20">
-			<Scroll :on-reach-bottom="handleReachBottom">
+			<Scroll :on-reach-bottom="handleReachBottom" :height="600">
 				<div class="intereting-wrap" v-for="item in data">
 					<div class="containDiv">
 						<div :title="item.title" class="title pointer eclipes1">
@@ -18,8 +18,8 @@
 									作者：<span class="organe pointer">{{item.author}}</span>
 								</span>
 								<span class="right">
-									<span><Icon class='icon gost' type="ios-text" />{{item.commentCount}}</span>
-									<span><Icon class='icon red' type="ios-heart" />{{item.fablousCount}}</span>
+									<span><Icon class='icon red pointer' type="ios-text" />{{item.commentCount}}</span>
+									<span><Icon class='icon red pointer' type="ios-heart" />{{item.fablousCount}}</span>
 								</span>
 							</div>
 							<div v-if='true' class="space">
@@ -60,30 +60,22 @@ export default {
 				let param = {
 					pageIndex:this.pageNo
 				};
-				console.log(param);
-				//this.$axios.post(url,{param:param})
 				this.$axios({method:'post', url:url, data:this.$qs.stringify(param)})
 				.then((response) => {
-					let status = response.status;
 					let data = response.data;
-					if( status == 200){
-						console.log(data);
+					if( response.status == 200){
 						this.continueGetData = data.pageIndex<=data.pageCount;
 						for(var i in data.pageDatas){
 							this.data.push(data.pageDatas[i]);
 						}
-						console.log(this.data.lenght);
 					}else{
 						console.log("getData error!");
 					}
 				}).catch((error) => {
-						console.log(error)
+					console.log(error)
 				})
 			}else{
-				$.message({
-					message: '已经到底啦！',
-					type: 'success',
-				});
+				this.$Message.info('已经到底啦！');
 			}
 		},
 		handleReachBottom () {
