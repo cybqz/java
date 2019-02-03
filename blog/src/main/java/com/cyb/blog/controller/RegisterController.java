@@ -2,7 +2,6 @@ package com.cyb.blog.controller;
 
 import java.util.List;
 import java.util.UUID;
-import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +24,7 @@ public class RegisterController {
 	
 	@RequestMapping(value="/register")
 	@ResponseBody
-	public Tips register (User user, HttpSession session) {
+	public Tips register (User user) {
 		Tips tips = new Tips("false", false);
 		if(user != null && StringUtils.isNotBlank(user.getUserName()) && StringUtils.isNotBlank(user.getPassword())) {
 			//检查用户名是否存在

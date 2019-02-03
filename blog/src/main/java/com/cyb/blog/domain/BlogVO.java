@@ -2,33 +2,33 @@ package com.cyb.blog.domain;
 
 public class BlogVO extends Blog {
 
-	private int commentCount = 0;
+	private long commentCount = 0;
 	
-	private int fablousCount = 0;
+	private long fablousCount = 0;
 	
-	private int fowardCount = 0;
+	private long fowardCount = 0;
 
-	public int getCommentCount() {
+	public long getCommentCount() {
 		return commentCount;
 	}
 
-	public void setCommentCount(int commentCount) {
+	public void setCommentCount(long commentCount) {
 		this.commentCount = commentCount;
 	}
 
-	public int getFablousCount() {
+	public long getFablousCount() {
 		return fablousCount;
 	}
 
-	public void setFablousCount(int fablousCount) {
+	public void setFablousCount(long fablousCount) {
 		this.fablousCount = fablousCount;
 	}
 
-	public int getFowardCount() {
+	public long getFowardCount() {
 		return fowardCount;
 	}
 
-	public void setFowardCount(int fowardCount) {
+	public void setFowardCount(long fowardCount) {
 		this.fowardCount = fowardCount;
 	}
 	

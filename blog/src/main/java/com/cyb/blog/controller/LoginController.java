@@ -35,7 +35,7 @@ public class LoginController {
 			List<User> users = userSerivces.selectByExample(example);
 			if(users != null && users.size() > 0) {
 				session.setAttribute(SystemStatic.SESSION_NAME, users.get(0));
-				tips = new Tips("true", true);
+				tips = new Tips("登录成功！", true);
 			}
 		}
 		return tips;
@@ -45,9 +45,9 @@ public class LoginController {
 	@ResponseBody
 	public Tips logout (User user, HttpSession session) {
 		Tips tips = new Tips("false", false);
-		if(user != null && StringUtils.isNotBlank(user.getName()) && StringUtils.isNotBlank(user.getPassword())) {
-			session.removeAttribute(SystemStatic.SESSION_NAME);
-			tips = new Tips("true", true);
+		if(user != null && StringUtils.isNotBlank(user.getUserName()) && StringUtils.isNotBlank(user.getPassword())) {
+			session.invalidate();
+			tips = new Tips("退出成功！", true);
 		}
 		return tips;
 	}

@@ -25,6 +25,9 @@
 						<span class="login-text" @click="registerModal = true">注册</span>
 					</div>
 					<div v-show="logined">
+                        <span class="login-text">
+                            <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" />&nbsp;
+                            {{formLogin.userName}}</span>
 						<span class="login-text" @click="logout()">退出</span>
 					</div>
 				</div>
@@ -117,7 +120,7 @@ export default {
 		};
     return {
 			logined:false,
-			tabActive:0,
+            tabActive:0,
 			loginModal:false,
 			login_loading:false,
 			registerModal:false,

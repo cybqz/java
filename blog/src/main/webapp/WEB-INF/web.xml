@@ -33,17 +33,17 @@
   </listener>
   <!-- 编码过滤器 -->  
     <filter>  
-        <filter-name>encodingFilter</filter-name>  
-        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>  
-        <async-supported>true</async-supported>  
-        <init-param>  
-            <param-name>encoding</param-name>  
-            <param-value>UTF-8</param-value>  
-        </init-param>  
+    <filter-name>encodingFilter</filter-name>  
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>  
+    <async-supported>true</async-supported>  
+    <init-param>  
+        <param-name>encoding</param-name>  
+        <param-value>UTF-8</param-value>  
+    </init-param>  
     </filter>  
     <filter-mapping>  
-        <filter-name>encodingFilter</filter-name>  
-        <url-pattern>*.do</url-pattern>  
+    <filter-name>encodingFilter</filter-name>  
+    <url-pattern>*.do</url-pattern>  
     </filter-mapping>  
     
   <servlet>
@@ -63,6 +63,11 @@
   </servlet-mapping>
   
   <welcome-file-list>  
-        <welcome-file>/index.jsp</welcome-file>  
-    </welcome-file-list> 
+    <welcome-file>/index.jsp</welcome-file>  
+  </welcome-file-list>
+
+  <!-- 设置session失效，单位分 -->
+　<session-config>
+　　<session-timeout>30</session-timeout>
+　</session-config>
 </web-app>

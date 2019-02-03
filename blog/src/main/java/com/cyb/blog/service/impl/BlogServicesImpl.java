@@ -8,9 +8,12 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.cyb.blog.dao.BlogMapper;
+import com.cyb.blog.dao.FabulousMapper;
 import com.cyb.blog.domain.Blog;
 import com.cyb.blog.domain.BlogExample;
 import com.cyb.blog.domain.BlogVO;
+import com.cyb.blog.domain.FabulousExample;
+import com.cyb.blog.domain.FabulousExample.Criteria;
 import com.cyb.blog.entity.Pagenation;
 import com.cyb.blog.service.BlogServices;
 
@@ -19,6 +22,8 @@ public class BlogServicesImpl implements BlogServices {
 
 	@Resource
 	private BlogMapper blogMapper;
+	@Resource
+	private FabulousMapper fabulousMapper;
 	
 	public long countByExample(BlogExample example) {
 		// TODO Auto-generated method stub
@@ -84,6 +89,11 @@ public class BlogServicesImpl implements BlogServices {
 			List<Blog> list = blogMapper.selectByExample(example);
 			for(Blog b : list) {
 				BlogVO blogVO = BlogVO.toBlog(b);
+				FabulousExample fabulousExample = new FabulousExample();
+				Criteria criteria = fabulousExample.createCriteria();
+				criteria.andBlogIdEqualTo(b.getId());
+				long fabulousCount = fabulousMapper.countByExample(fabulousExample);
+				blogVO.setFablousCount(fabulousCount);
 				result.add(blogVO);
 			}
 			pagenation.setPageDatas(result);

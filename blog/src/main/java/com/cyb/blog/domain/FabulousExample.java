@@ -405,66 +405,6 @@ public class FabulousExample {
             return (Criteria) this;
         }
 
-        public Criteria andFabulousCountIsNull() {
-            addCriterion("fabulous_count is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFabulousCountIsNotNull() {
-            addCriterion("fabulous_count is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFabulousCountEqualTo(Integer value) {
-            addCriterion("fabulous_count =", value, "fabulousCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andFabulousCountNotEqualTo(Integer value) {
-            addCriterion("fabulous_count <>", value, "fabulousCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andFabulousCountGreaterThan(Integer value) {
-            addCriterion("fabulous_count >", value, "fabulousCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andFabulousCountGreaterThanOrEqualTo(Integer value) {
-            addCriterion("fabulous_count >=", value, "fabulousCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andFabulousCountLessThan(Integer value) {
-            addCriterion("fabulous_count <", value, "fabulousCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andFabulousCountLessThanOrEqualTo(Integer value) {
-            addCriterion("fabulous_count <=", value, "fabulousCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andFabulousCountIn(List<Integer> values) {
-            addCriterion("fabulous_count in", values, "fabulousCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andFabulousCountNotIn(List<Integer> values) {
-            addCriterion("fabulous_count not in", values, "fabulousCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andFabulousCountBetween(Integer value1, Integer value2) {
-            addCriterion("fabulous_count between", value1, value2, "fabulousCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andFabulousCountNotBetween(Integer value1, Integer value2) {
-            addCriterion("fabulous_count not between", value1, value2, "fabulousCount");
-            return (Criteria) this;
-        }
-
         public Criteria andFabulousDateIsNull() {
             addCriterion("fabulous_date is null");
             return (Criteria) this;

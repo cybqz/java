@@ -16,7 +16,7 @@ public class FabulousServicesImpl implements FabulousServices {
 	
 	public long countByExample(FabulousExample example) {
 		// TODO Auto-generated method stub
-		return 0;
+		return fabulousMapper.countByExample(example);
 	}
 
 	public int deleteByExample(FabulousExample example) {
@@ -30,8 +30,7 @@ public class FabulousServicesImpl implements FabulousServices {
 	}
 
 	public int insert(Fabulous record) {
-		// TODO Auto-generated method stub
-		return 0;
+		return fabulousMapper.insert(record);
 	}
 
 	public int insertSelective(Fabulous record) {

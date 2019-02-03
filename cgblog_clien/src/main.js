@@ -16,12 +16,12 @@ Vue.prototype.$Message = Message
 axios.defaults.timeout = 5000;// 在超时前，所有请求都会等待 5 秒
 axios.defaults.headers.post['Content-Type']= 'application/x-www-form-urlencoded';// 配置请求头
 axios.defaults.baseURL = 'http://192.168.1.113:9090/blog/';// 配置接口地址
-axios.defaults.withCredentials = false;
+axios.defaults.withCredentials = true
 
 Vue.config.productionTip = false;
 
 
-Vue.use(iView) //使用iview组件 
+Vue.use(iView), //使用iview组件 
 
 /* eslint-disable no-new */
 new Vue({

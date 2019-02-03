@@ -18,12 +18,11 @@
 									作者：<span class="organe pointer">{{item.author}}</span>
 								</span>
 								<span class="right">
-									<span><Icon class='icon red pointer' type="ios-text" />{{item.commentCount}}</span>
-									<span><Icon class='icon red pointer' type="ios-heart" />{{item.fablousCount}}</span>
+									<span><Icon @click="doComment(item.id)" class='icon red pointer' type="ios-text" />{{item.commentCount}}</span>
+									<span><Icon @click="doFablous(item.id)" class='icon red pointer' type="ios-heart" />{{item.fablousCount}}</span>
 								</span>
 							</div>
 							<div v-if='true' class="space">
-								
 							</div>
 						</div>
 					</div>
@@ -32,7 +31,6 @@
 				</div>
 			</Scroll>
 		</div>
-		
 	</div>
 </template>
 
@@ -78,11 +76,40 @@ export default {
 				this.$Message.info('已经到底啦！');
 			}
 		},
-		handleReachBottom () {
+		handleReachBottom(){
 			this.pageNo += 1;
 			this.getData();
+        },
+        doComment(id){
+            alert(id);
+        },
+        doFablous(id){
+            let url = this.$axios.defaults.baseURL + "blogController/doFablous";
+            let param = {
+                id:id
+            };
+            this.$axios({method:'post', url:url, data:this.$qs.stringify(param)})
+            .then((response) => {
+                let data = response.data;
+                if( response.status == 200){
+                    if(data.validate){
+                        for(var i in this.data){
+                            if(this.data[i].id == id){
+                                ++ this.data[i].fablousCount;
+                            }
+                        }
+                        this.$Message.success(data.msg);
+                    }else{
+                        this.$Message.error(data.msg);
+                    }
+                }else{
+                    console.log("getData error!");
+                }
+            }).catch((error) => {
+                console.log(error)
+            })
         }
-  },
+    },
 	mounted() {
 		this.getData();
 	}
