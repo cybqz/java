@@ -55,10 +55,11 @@ export default {
   },
   methods:{
 		test(){
-			let url = this.$axios.defaults.baseURL + "blogController/publish";
+			let url = this.$axios.defaults.baseURL + "readingController/publish";
 			let param = {
 				title:'hhahahhaaaaaaaaaaaaaaaaaaa',
-				containt:'  会好好睡觉'
+                recommend:'  会好好睡觉',
+                modal:'bk'
 
 			};
 			this.$axios.get(url, {params: param})

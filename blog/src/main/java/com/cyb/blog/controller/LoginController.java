@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cyb.blog.domain.User;
 import com.cyb.blog.domain.UserExample;
 import com.cyb.blog.domain.UserExample.Criteria;
-import com.cyb.blog.entity.SystemStatic;
+import com.cyb.blog.entity.Constant;
 import com.cyb.blog.entity.Tips;
 import com.cyb.blog.service.UserServices;
 
@@ -34,7 +34,7 @@ public class LoginController {
 			criteria.andPasswordEqualTo(user.getPassword());
 			List<User> users = userSerivces.selectByExample(example);
 			if(users != null && users.size() > 0) {
-				session.setAttribute(SystemStatic.SESSION_NAME, users.get(0));
+				session.setAttribute(Constant.SESSION_NAME, users.get(0));
 				tips = new Tips("登录成功！", true);
 			}
 		}

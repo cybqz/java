@@ -31,9 +31,6 @@ public class BlogExample {
      */
     protected List<Criteria> oredCriteria;
     
-    /**
-     * 分页
-     */
     protected Pagenation pagenation;
 
     /**

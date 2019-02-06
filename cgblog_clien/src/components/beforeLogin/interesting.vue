@@ -39,22 +39,20 @@ export default {
   name: 'beforeLogin',
   data () {
     return {
-			tatal:0,
-			pageSize:10,
-			pageNo:1,
-			data:[],
-			continueGetData:true
+        controllrt:'blogController/',
+        tatal:0,
+        pageSize:10,
+        pageNo:1,
+        data:[],
+        continueGetData:true
     }
   },
   watch:{
   },
   methods:{
-		changePage(){
-			this.getData();
-		},
 		getData(){
 			if(this.continueGetData){
-				let url = this.$axios.defaults.baseURL + "blogController/getList";
+				let url = this.$axios.defaults.baseURL + this.controllrt + "getList";
 				let param = {
 					pageIndex:this.pageNo
 				};
@@ -84,7 +82,7 @@ export default {
             alert(id);
         },
         doFablous(id){
-            let url = this.$axios.defaults.baseURL + "blogController/doFablous";
+            let url = this.$axios.defaults.baseURL + this.controllrt + "doFablous";
             let param = {
                 id:id
             };
@@ -96,6 +94,7 @@ export default {
                         for(var i in this.data){
                             if(this.data[i].id == id){
                                 ++ this.data[i].fablousCount;
+                                return;
                             }
                         }
                         this.$Message.success(data.msg);

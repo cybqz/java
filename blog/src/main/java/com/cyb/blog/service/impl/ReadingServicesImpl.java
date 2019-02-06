@@ -6,33 +6,36 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 
-import com.cyb.blog.dao.BlogMapper;
 import com.cyb.blog.dao.FabulousMapper;
+import com.cyb.blog.dao.ReadingMapper;
 import com.cyb.blog.domain.Blog;
 import com.cyb.blog.domain.BlogExample;
 import com.cyb.blog.domain.BlogVO;
 import com.cyb.blog.domain.FabulousExample;
+import com.cyb.blog.domain.Reading;
+import com.cyb.blog.domain.ReadingExample;
+import com.cyb.blog.domain.ReadingExample.CriteriaReading;
+import com.cyb.blog.domain.ReadingVO;
 import com.cyb.blog.domain.FabulousExample.Criteria;
 import com.cyb.blog.entity.Pagenation;
-import com.cyb.blog.service.BlogServices;
+import com.cyb.blog.service.ReadingServices;
 
-@Service(value="blogServices")
-public class BlogServicesImpl implements BlogServices {
+@Service(value="readingServices")
+public class ReadingServicesImpl implements ReadingServices {
 
 	@Resource
-	private BlogMapper blogMapper;
+	private ReadingMapper readingMapper;
 	@Resource
 	private FabulousMapper fabulousMapper;
 	
-	public long countByExample(BlogExample example) {
+	public long countByExample(ReadingExample example) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public int deleteByExample(BlogExample example) {
+	public int deleteByExample(ReadingExample example) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -42,64 +45,66 @@ public class BlogServicesImpl implements BlogServices {
 		return 0;
 	}
 
-	public int insert(Blog record) {
+	public int insert(Reading record) {
 		record.setAuthor("author");
 		record.setCreatetime(new Date());
 		record.setId(UUID.randomUUID().toString());
-		return blogMapper.insert(record);
+		return readingMapper.insert(record);
 	}
 
-	public int insertSelective(Blog record) {
+	public int insertSelective(Reading record) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public List<Blog> selectByExample(BlogExample example) {
+	public List<Reading> selectByExample(ReadingExample example) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Blog selectByPrimaryKey(String id) {
+	public Reading selectByPrimaryKey(String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public int updateByExampleSelective(Blog record, BlogExample example) {
+	public int updateByExampleSelective(Reading record, ReadingExample example) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public int updateByExample(Blog record, BlogExample example) {
+	public int updateByExample(Reading record, ReadingExample example) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public int updateByPrimaryKeySelective(Blog record) {
+	public int updateByPrimaryKeySelective(Reading record) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public int updateByPrimaryKey(Blog record) {
+	public int updateByPrimaryKey(Reading record) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public Pagenation getList(Blog blog, Pagenation pagenation) {
-		BlogExample example = new BlogExample();
-		long count = blogMapper.countByExample(example);
+	public Pagenation getList(Reading reading, Pagenation pagenation) {
+		ReadingExample example = new ReadingExample();
+		long count = readingMapper.countByExample(example);
 		pagenation.setDataCount(count);
 		if(count > 0 && pagenation.searcha) {
-			List<BlogVO> result = new ArrayList<BlogVO>();
+			List<ReadingVO> result = new ArrayList<ReadingVO>();
 			example.setPagenation(pagenation);
-			List<Blog> list = blogMapper.selectByExample(example);
-			for(Blog b : list) {
-				BlogVO blogVO = BlogVO.toBlog(b);
+			CriteriaReading readingCriteria = example.createCriteria();
+			readingCriteria.andModalEqualTo(reading.getModal());
+			List<Reading> list = readingMapper.selectByExample(example);
+			for(Reading r : list) {
+				ReadingVO readingVO = ReadingVO.toBlog(r);
 				FabulousExample fabulousExample = new FabulousExample();
 				Criteria criteria = fabulousExample.createCriteria();
-				criteria.andBlogIdEqualTo(b.getId());
+				criteria.andBlogIdEqualTo(r.getId());
 				long fabulousCount = fabulousMapper.countByExample(fabulousExample);
-				blogVO.setFablousCount(fabulousCount);
-				result.add(blogVO);
+				readingVO.setFablousCount(fabulousCount);
+				result.add(readingVO);
 			}
 			pagenation.setPageDatas(result);
 		}
