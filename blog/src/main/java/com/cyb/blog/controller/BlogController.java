@@ -2,12 +2,7 @@ package com.cyb.blog.controller;
 
 import java.util.Date;
 import java.util.UUID;
-
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -68,9 +63,11 @@ public class BlogController {
 	@RequestMapping(value="/doFablous")
 	@ResponseBody
 	public Tips doFablous (Blog blog) {
+		Validate validate = new Validate();
 		Tips tips = new Tips("false", false);
-		User user = (User) SecurityUtils.getSubject().getSession().getAttribute(Constant.SESSION_NAME);
-		if(user != null) {
+		User user = validate.validateAll(tips, Constant.ROLE_ADMIN, "permission");
+		if(tips.isValidate()) {
+			tips.setValidate(false);
 			FabulousExample fabulousExample = new FabulousExample();
 			Criteria criteria = fabulousExample.createCriteria();
 			criteria.andBlogIdEqualTo(blog.getId());
