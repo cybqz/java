@@ -14,7 +14,6 @@ import com.cyb.blog.domain.FabulousExample;
 import com.cyb.blog.domain.User;
 import com.cyb.blog.domain.FabulousExample.Criteria;
 import com.cyb.blog.entity.Pagenation;
-import com.cyb.blog.entity.Constant;
 import com.cyb.blog.entity.Tips;
 import com.cyb.blog.service.BlogServices;
 import com.cyb.blog.service.FabulousServices;
@@ -35,7 +34,7 @@ public class BlogController {
 	public Tips publish (Blog blog) {
 		Validate validate = new Validate();
 		Tips tips = new Tips("false", false);
-		User user = validate.validateAll(tips, Constant.ROLE_ADMIN, "permission");
+		User user = validate.validateAll(tips, null, null);
 		if(tips.isValidate()) {
 			tips.setValidate(false);
 			if(StringUtils.isBlank(blog.getTitle())) {
@@ -65,7 +64,7 @@ public class BlogController {
 	public Tips doFablous (Blog blog) {
 		Validate validate = new Validate();
 		Tips tips = new Tips("false", false);
-		User user = validate.validateAll(tips, Constant.ROLE_ADMIN, "permission");
+		User user = validate.validateAll(tips, null, null);
 		if(tips.isValidate()) {
 			tips.setValidate(false);
 			FabulousExample fabulousExample = new FabulousExample();
@@ -74,7 +73,10 @@ public class BlogController {
 			criteria.andUserIdEqualTo(user.getId());
 			long count = fabulousServices.countByExample(fabulousExample);
 			if(count > 0) {
-				tips.setMsg("已经赞过啦！");
+				int delete = fabulousServices.deleteByExample(fabulousExample);
+				if(delete > 0) {
+					tips = new Tips("取消点赞成功！", true);
+				}
 			}else {
 				Fabulous fabulous = new Fabulous();
 				fabulous.setId(UUID.randomUUID().toString());
@@ -86,8 +88,6 @@ public class BlogController {
 					tips = new Tips("点赞成功！", true);
 				}
 			}
-		}else {
-			tips.setMsg("请登录后点赞！");
 		}
 		return tips;
 	}

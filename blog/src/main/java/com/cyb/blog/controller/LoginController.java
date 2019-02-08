@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cyb.blog.domain.User;
 import com.cyb.blog.entity.Constant;
 import com.cyb.blog.entity.Tips;
+import com.cyb.blog.utils.Validate;
 
 @CrossOrigin
 @Controller
@@ -26,8 +27,9 @@ public class LoginController {
 	        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user.getUserName(),user.getPassword());
 	        try {
 	            subject.login(usernamePasswordToken);
-	            subject.getSession(true).setAttribute(Constant.SESSION_NAME, user);
-	            tips = new Tips("登录成功！", true);
+	            Object object = subject.getPrincipal();
+	            subject.getSession(true).setAttribute(Constant.SESSION_NAME, object);
+	            tips = new Tips("登录成功！", true, object);
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
@@ -39,10 +41,18 @@ public class LoginController {
 	@ResponseBody
 	public Tips logout (User user) {
 		Tips tips = new Tips("false", false);
-		if(user != null && StringUtils.isNotBlank(user.getUserName()) && StringUtils.isNotBlank(user.getPassword())) {
-			SecurityUtils.getSubject().logout();
+		Subject subject = SecurityUtils.getSubject();
+		if(subject.isAuthenticated()) {
+			subject.logout();
 			tips = new Tips("退出成功！", true);
 		}
 		return tips;
+	}
+	
+	@RequestMapping(value="/getUser")
+	@ResponseBody
+	public User getUser () {
+		Validate validate = new Validate();
+		return validate.isLogin();
 	}
 }

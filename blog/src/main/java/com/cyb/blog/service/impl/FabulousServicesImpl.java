@@ -21,7 +21,7 @@ public class FabulousServicesImpl implements FabulousServices {
 
 	public int deleteByExample(FabulousExample example) {
 		// TODO Auto-generated method stub
-		return 0;
+		return fabulousMapper.deleteByExample(example);
 	}
 
 	public int deleteByPrimaryKey(String id) {

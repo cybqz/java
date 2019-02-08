@@ -19,6 +19,7 @@ import com.cyb.blog.entity.Constant;
 import com.cyb.blog.entity.Tips;
 import com.cyb.blog.service.FabulousServices;
 import com.cyb.blog.service.ReadingServices;
+import com.cyb.blog.utils.Validate;
 
 @CrossOrigin
 @Controller
@@ -33,17 +34,23 @@ public class ReadingController {
 	@RequestMapping(value="/publish")
 	@ResponseBody
 	public Tips publish (Reading reading) {
+		Validate validate = new Validate();
 		Tips tips = new Tips("false", false);
-		if(StringUtils.isBlank(reading.getModal()) || !Constant.READING_MODALS.contains(reading.getModal())) {
-			tips.setMsg("错误的类型！");
-		}else if(StringUtils.isBlank(reading.getTitle())) {
-			tips.setMsg("空的标题！");
-		}else if(StringUtils.isBlank(reading.getRecommend())) {
-			tips.setMsg("空的荐语！");
-		}else {
-			int count = readingServices.insert(reading);
-			if(count > 1) {
-				tips = new Tips("true", true);
+		User user = validate.validateAll(tips, null, null);
+		if(tips.isValidate()) {
+			tips.setValidate(false);
+			if(StringUtils.isBlank(reading.getModal()) || !Constant.READING_MODALS.contains(reading.getModal())) {
+				tips.setMsg("错误的类型！");
+			}else if(StringUtils.isBlank(reading.getTitle())) {
+				tips.setMsg("空的标题！");
+			}else if(StringUtils.isBlank(reading.getRecommend())) {
+				tips.setMsg("空的荐语！");
+			}else {
+				reading.setAuthor(user.getId());
+				int count = readingServices.insert(reading);
+				if(count > 1) {
+					tips = new Tips("true", true);
+				}
 			}
 		}
 		return tips;
@@ -59,16 +66,21 @@ public class ReadingController {
 	@RequestMapping(value="/doFablous")
 	@ResponseBody
 	public Tips doFablous (Reading reading, HttpSession session) {
+		Validate validate = new Validate();
 		Tips tips = new Tips("false", false);
-		User user = (User) session.getAttribute(Constant.SESSION_NAME);
-		if(user != null) {
+		User user = validate.validateAll(tips, null, null);
+		if(tips.isValidate()) {
+			tips.setValidate(false);
 			FabulousExample fabulousExample = new FabulousExample();
 			Criteria criteria = fabulousExample.createCriteria();
 			criteria.andBlogIdEqualTo(reading.getId());
 			criteria.andUserIdEqualTo(user.getId());
 			long count = fabulousServices.countByExample(fabulousExample);
 			if(count > 0) {
-				tips.setMsg("已经赞过啦！");
+				int delete = fabulousServices.deleteByExample(fabulousExample);
+				if(delete > 0) {
+					tips = new Tips("取消点赞成功！", true);
+				}
 			}else {
 				Fabulous fabulous = new Fabulous();
 				fabulous.setId(UUID.randomUUID().toString());
@@ -80,8 +92,6 @@ public class ReadingController {
 					tips = new Tips("点赞成功！", true);
 				}
 			}
-		}else {
-			tips.setMsg("请登录后点赞！");
 		}
 		return tips;
 	}

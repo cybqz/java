@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
-
 import com.cyb.blog.dao.BlogMapper;
 import com.cyb.blog.dao.FabulousMapper;
 import com.cyb.blog.domain.Blog;
@@ -16,8 +13,10 @@ import com.cyb.blog.domain.BlogExample;
 import com.cyb.blog.domain.BlogVO;
 import com.cyb.blog.domain.FabulousExample;
 import com.cyb.blog.domain.FabulousExample.Criteria;
+import com.cyb.blog.domain.User;
 import com.cyb.blog.entity.Pagenation;
 import com.cyb.blog.service.BlogServices;
+import com.cyb.blog.utils.Validate;
 
 @Service(value="blogServices")
 public class BlogServicesImpl implements BlogServices {
@@ -91,13 +90,22 @@ public class BlogServicesImpl implements BlogServices {
 			List<BlogVO> result = new ArrayList<BlogVO>();
 			example.setPagenation(pagenation);
 			List<Blog> list = blogMapper.selectByExample(example);
+			Validate validate = new Validate();
+			User user = validate.isLogin();
 			for(Blog b : list) {
 				BlogVO blogVO = BlogVO.toBlog(b);
+				//查询点赞数量
 				FabulousExample fabulousExample = new FabulousExample();
 				Criteria criteria = fabulousExample.createCriteria();
 				criteria.andBlogIdEqualTo(b.getId());
 				long fabulousCount = fabulousMapper.countByExample(fabulousExample);
 				blogVO.setFablousCount(fabulousCount);
+				//查询当前用户点赞数量
+				if(user != null) {
+					criteria.andUserIdEqualTo(user.getId());
+					long userFabulousCount = fabulousMapper.countByExample(fabulousExample);
+					blogVO.setFablous(userFabulousCount==0);
+				}
 				result.add(blogVO);
 			}
 			pagenation.setPageDatas(result);

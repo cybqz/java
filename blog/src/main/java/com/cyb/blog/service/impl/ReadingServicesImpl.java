@@ -4,21 +4,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
-
 import com.cyb.blog.dao.FabulousMapper;
 import com.cyb.blog.dao.ReadingMapper;
-import com.cyb.blog.domain.Blog;
-import com.cyb.blog.domain.BlogExample;
-import com.cyb.blog.domain.BlogVO;
 import com.cyb.blog.domain.FabulousExample;
+import com.cyb.blog.domain.FabulousExample.Criteria;
 import com.cyb.blog.domain.Reading;
 import com.cyb.blog.domain.ReadingExample;
 import com.cyb.blog.domain.ReadingExample.CriteriaReading;
 import com.cyb.blog.domain.ReadingVO;
-import com.cyb.blog.domain.FabulousExample.Criteria;
 import com.cyb.blog.entity.Pagenation;
 import com.cyb.blog.service.ReadingServices;
 
@@ -46,7 +41,6 @@ public class ReadingServicesImpl implements ReadingServices {
 	}
 
 	public int insert(Reading record) {
-		record.setAuthor("author");
 		record.setCreatetime(new Date());
 		record.setId(UUID.randomUUID().toString());
 		return readingMapper.insert(record);

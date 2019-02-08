@@ -1,12 +1,22 @@
 package com.cyb.blog.domain;
 
 public class BlogVO extends Blog {
+	
+	private boolean fablous = false;
 
 	private long commentCount = 0;
 	
 	private long fablousCount = 0;
 	
 	private long fowardCount = 0;
+	
+	public boolean isFablous() {
+		return fablous;
+	}
+
+	public void setFablous(boolean fablous) {
+		this.fablous = fablous;
+	}
 
 	public long getCommentCount() {
 		return commentCount;

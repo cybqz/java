@@ -8,9 +8,18 @@ public class Tips {
 	
 	private boolean validate;
 	
+	private Object data;
+	
 	public Tips(String msg, boolean validate) {
 		super();
 		this.msg = msg;
+		this.validate = validate;
+	}
+	
+	public Tips(String msg, boolean validate, Object data) {
+		super();
+		this.msg = msg;
+		this.data = data;
 		this.validate = validate;
 	}
 	
@@ -43,5 +52,13 @@ public class Tips {
 
 	public void setValidate(boolean validate) {
 		this.validate = validate;
+	}
+
+	public Object getData() {
+		return data;
+	}
+
+	public void setData(Object data) {
+		this.data = data;
 	}
 }

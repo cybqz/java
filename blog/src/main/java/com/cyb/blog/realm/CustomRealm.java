@@ -23,6 +23,7 @@ public class CustomRealm extends AuthorizingRealm {
 	private static final Logger logger = LoggerFactory.getLogger(CustomRealm.class);
     @Autowired
     private UserServices userServices;
+    
     /**
      * 用户授权认证
      */
@@ -47,7 +48,7 @@ public class CustomRealm extends AuthorizingRealm {
 		List<User> users = userServices.selectByExample(example);
 		if(users != null && users.size() > 0) {
 			User user = users.get(0);
-			AuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user.getUserName(), user.getPassword(), "peng");
+			AuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), "CustomRealm");
 	        return authenticationInfo;
 		}
         return null;
