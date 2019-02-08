@@ -43,7 +43,6 @@ public class BlogServicesImpl implements BlogServices {
 	}
 
 	public int insert(Blog record) {
-		record.setAuthor("author");
 		record.setCreatetime(new Date());
 		record.setId(UUID.randomUUID().toString());
 		return blogMapper.insert(record);

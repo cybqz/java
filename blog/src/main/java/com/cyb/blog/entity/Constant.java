@@ -7,6 +7,10 @@ public class Constant {
 
 	public static String SESSION_NAME = "SESSION_NAME";
 	
+	public static String PROJECT_NAME = "blog";
+	
+	public static String ROLE_ADMIN = "admin";
+	
 	/***
 	 * reading modals
 	 */

@@ -1,12 +1,15 @@
 package com.cyb.blog.service.impl;
 
 import java.util.List;
+import java.util.Set;
+
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.cyb.blog.dao.UserMapper;
 import com.cyb.blog.domain.User;
 import com.cyb.blog.domain.UserExample;
 import com.cyb.blog.service.UserServices;
+import com.cyb.blog.utils.MyStringUtils;
 
 @Service(value="userSerivces")
 public class UserServicesImpl implements UserServices {
@@ -30,6 +33,8 @@ public class UserServicesImpl implements UserServices {
 	}
 
 	public int insert(User record) {
+		String password = MyStringUtils.encryptionMD5(record.getPassword());
+		record.setPassword(password);
 		return userMapper.insert(record);
 	}
 
@@ -66,5 +71,9 @@ public class UserServicesImpl implements UserServices {
 	public int updateByPrimaryKey(User record) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public Set<String> queryRolesByName(String userName) {
+		return userMapper.queryRolesByName(userName);
 	}
 }

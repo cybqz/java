@@ -3,6 +3,7 @@ package com.cyb.blog.dao;
 import com.cyb.blog.domain.User;
 import com.cyb.blog.domain.UserExample;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -97,4 +98,6 @@ public interface UserMapper {
      * @mbg.generated Thu Jan 24 22:47:16 CST 2019
      */
     int updateByPrimaryKey(User record);
+
+	Set<String> queryRolesByName(String userName);
 }

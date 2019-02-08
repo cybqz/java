@@ -1,21 +1,27 @@
 <template>
 	<div>
         <div class="comments">
-            <Input class="textarea" v-model="message" type="textarea" placeholder="Enter something..."
+            <Input class="textarea" v-model="message" type="textarea" placeholder="说出来.........."
                    :border="{size:0}" :autosize="{minRows: 8,maxRows: 8}" />
             <div class="info">
                 <span class="left">
-                    <Poptip placement="bottom-start" width="300">
+                    <Poptip placement="bottom-start" width="400">
                         <div class="api" slot="content">
                             <Tabs size="small">
                                 <TabPane label="表情一">
-
+                                    <div class="" v-for="item in emoticonsA">
+                                        <img v-bind:src="item" alt="表情" @click="selectEmoticon(item)">
+                                    </div>
                                 </TabPane>
                                 <TabPane label="表情二">
-
+                                    <div class="" v-for="item in emoticonsB">
+                                        <img v-bind:src="item" alt="表情" @click="selectEmoticon(item)">
+                                    </div>
                                 </TabPane>
                                 <TabPane label="表情三">
-                                    
+                                    <div class="" v-for="item in emoticonsC">
+                                        <img v-bind:src="item" alt="表情" @click="selectEmoticon(item)">
+                                    </div>
                                 </TabPane>
                             </Tabs>
                         </div>
@@ -44,18 +50,50 @@ export default {
   name: 'message-board',
   data () {
     return {
-        message:''
+        message:'',
+        emoticonsA:[],
+        emoticonsB:[],
+        emoticonsC:[]
     }
   },
   watch:{
-// 	    fromTab: {
-// 		  handler: function (val, oldVal) { 
-// 			  this.fromTab = val;
-// 		  },
-// 		  immediate: true
-// 		},
   },
   methods:{
+      getEmoticon(){
+          let baseURL = this.$axios.defaults.baseURL;
+          let url = baseURL + "emoticonController/getEmoticonList";
+          this.$axios({method:'post', url:url, data:null})
+          .then((response) => {
+              let data = response.data;
+              if( response.status == 200){
+                  for(var i in  data[0]){
+                      for(var j in  data[0][i]){
+                          this.emoticonsA.push(baseURL + data[0][i][j]);
+                      }
+                  }
+                  for(var i in  data[1]){
+                      for(var j in  data[1][i]){
+                          this.emoticonsB.push(baseURL + data[1][i][j]);
+                      }
+                  }
+                  for(var i in  data[2]){
+                      for(var j in  data[2][i]){
+                          this.emoticonsC.push(baseURL + data[2][i][j]);
+                      }
+                  }
+              }else{
+                  console.log("getEmoticon error!");
+              }
+          }).catch((error) => {
+              console.log(error)
+          });
+      },
+      selectEmoticon(image){
+          this.message += '['+image+']';
+      }
+  },
+  mounted() {
+      this.getEmoticon();
   }
 }
 </script>
@@ -75,13 +113,20 @@ export default {
             border-top: 1px solid #ccc;
             .right, .left{
                 flex: 1;
-                font-size: 16px;
+                font-size: 25px;
             }
             .organe{
                 color: orange;
             }
             .left{
                 display: flex;
+                img{
+                    cursor:pointer;
+                    width: 40px;
+                    height: 40px;
+                    float: left;
+                    margin: 5px;
+                }
                 span{
                     flex: 1;
                     .icon{

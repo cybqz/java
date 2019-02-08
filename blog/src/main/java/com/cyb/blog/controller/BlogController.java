@@ -6,6 +6,8 @@ import java.util.UUID;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,6 +23,7 @@ import com.cyb.blog.entity.Constant;
 import com.cyb.blog.entity.Tips;
 import com.cyb.blog.service.BlogServices;
 import com.cyb.blog.service.FabulousServices;
+import com.cyb.blog.utils.Validate;
 
 @CrossOrigin
 @Controller
@@ -35,15 +38,21 @@ public class BlogController {
 	@RequestMapping(value="/publish")
 	@ResponseBody
 	public Tips publish (Blog blog) {
+		Validate validate = new Validate();
 		Tips tips = new Tips("false", false);
-		if(StringUtils.isBlank(blog.getTitle())) {
-			tips.setMsg("空的标题！");
-		}else if(StringUtils.isBlank(blog.getContaint())) {
-			tips.setMsg("空的内容！");
-		}else {
-			int count = blogServices.insert(blog);
-			if(count > 1) {
-				tips = new Tips("true", true);
+		User user = validate.validateAll(tips, Constant.ROLE_ADMIN, "permission");
+		if(tips.isValidate()) {
+			tips.setValidate(false);
+			if(StringUtils.isBlank(blog.getTitle())) {
+				tips.setMsg("空的标题！");
+			}else if(StringUtils.isBlank(blog.getContaint())) {
+				tips.setMsg("空的内容！");
+			}else {
+				blog.setAuthor(user.getId());
+				int count = blogServices.insert(blog);
+				if(count > 1) {
+					tips = new Tips("true", true);
+				}
 			}
 		}
 		return tips;
@@ -58,9 +67,9 @@ public class BlogController {
 	
 	@RequestMapping(value="/doFablous")
 	@ResponseBody
-	public Tips doFablous (Blog blog, HttpSession session) {
+	public Tips doFablous (Blog blog) {
 		Tips tips = new Tips("false", false);
-		User user = (User) session.getAttribute(Constant.SESSION_NAME);
+		User user = (User) SecurityUtils.getSubject().getSession().getAttribute(Constant.SESSION_NAME);
 		if(user != null) {
 			FabulousExample fabulousExample = new FabulousExample();
 			Criteria criteria = fabulousExample.createCriteria();
