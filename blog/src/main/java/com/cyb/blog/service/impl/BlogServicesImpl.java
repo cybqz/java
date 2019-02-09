@@ -7,10 +7,13 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.cyb.blog.dao.BlogMapper;
+import com.cyb.blog.dao.CommentMapper;
 import com.cyb.blog.dao.FabulousMapper;
 import com.cyb.blog.domain.Blog;
 import com.cyb.blog.domain.BlogExample;
 import com.cyb.blog.domain.BlogVO;
+import com.cyb.blog.domain.CommentExample;
+import com.cyb.blog.domain.CommentExample.CriteriaComment;
 import com.cyb.blog.domain.FabulousExample;
 import com.cyb.blog.domain.FabulousExample.Criteria;
 import com.cyb.blog.domain.User;
@@ -25,6 +28,8 @@ public class BlogServicesImpl implements BlogServices {
 	private BlogMapper blogMapper;
 	@Resource
 	private FabulousMapper fabulousMapper;
+	@Resource
+	private CommentMapper commentMapper;
 	
 	public long countByExample(BlogExample example) {
 		// TODO Auto-generated method stub
@@ -94,17 +99,31 @@ public class BlogServicesImpl implements BlogServices {
 			User user = validate.isLogin();
 			for(Blog b : list) {
 				BlogVO blogVO = BlogVO.toBlog(b);
+				
 				//查询点赞数量
 				FabulousExample fabulousExample = new FabulousExample();
 				Criteria criteria = fabulousExample.createCriteria();
 				criteria.andBlogIdEqualTo(b.getId());
 				long fabulousCount = fabulousMapper.countByExample(fabulousExample);
 				blogVO.setFablousCount(fabulousCount);
-				//查询当前用户点赞数量
+				
+				//查询评论数量
+				CommentExample commentExample = new CommentExample();
+				CriteriaComment commentCriteria = commentExample.createCriteria();
+				commentCriteria.andBlogIdEqualTo(b.getId());
+				long commentCount = commentMapper.countByExample(commentExample);
+				blogVO.setCommentCount(commentCount);
+				
 				if(user != null) {
+					//查询当前用户点赞数量
 					criteria.andUserIdEqualTo(user.getId());
 					long userFabulousCount = fabulousMapper.countByExample(fabulousExample);
 					blogVO.setFablous(userFabulousCount==0);
+					
+					//查询当前用户评论数量
+					commentCriteria.andUserIdEqualTo(user.getId());
+					long usercommentCount = commentMapper.countByExample(commentExample);
+					blogVO.setComment(usercommentCount==0);
 				}
 				result.add(blogVO);
 			}
