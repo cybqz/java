@@ -6,36 +6,36 @@ import java.util.List;
 import java.util.UUID;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
-import com.cyb.blog.dao.BlogMapper;
 import com.cyb.blog.dao.CommentMapper;
 import com.cyb.blog.dao.FabulousMapper;
-import com.cyb.blog.domain.Blog;
-import com.cyb.blog.domain.BlogExample;
-import com.cyb.blog.domain.BlogVO;
+import com.cyb.blog.dao.MessageMapper;
 import com.cyb.blog.domain.CommentExample;
 import com.cyb.blog.domain.CommentExample.CriteriaComment;
 import com.cyb.blog.domain.FabulousExample;
 import com.cyb.blog.domain.FabulousExample.Criteria;
+import com.cyb.blog.domain.Message;
+import com.cyb.blog.domain.MessageExample;
+import com.cyb.blog.domain.MessageVO;
 import com.cyb.blog.domain.User;
 import com.cyb.blog.entity.Pagenation;
-import com.cyb.blog.service.BlogServices;
+import com.cyb.blog.service.MessageServices;
 import com.cyb.blog.utils.Validate;
 
-@Service(value="blogServices")
-public class BlogServicesImpl implements BlogServices {
+@Service(value="messageServices")
+public class MessageServicesImpl implements MessageServices {
 
 	@Resource
-	private BlogMapper blogMapper;
+	private MessageMapper messageMapper;
 	@Resource
 	private FabulousMapper fabulousMapper;
 	@Resource
 	private CommentMapper commentMapper;
 	
-	public long countByExample(BlogExample example) {
-		return blogMapper.countByExample(example);
+	public long countByExample(MessageExample example) {
+		return messageMapper.countByExample(example);
 	}
 
-	public int deleteByExample(BlogExample example) {
+	public int deleteByExample(MessageExample example) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -45,89 +45,89 @@ public class BlogServicesImpl implements BlogServices {
 		return 0;
 	}
 
-	public int insert(Blog record) {
-		record.setCreatetime(new Date());
+	public int insert(Message record) {
 		record.setId(UUID.randomUUID().toString());
-		return blogMapper.insert(record);
+		record.setCreatetime(new Date());
+		return messageMapper.insert(record);
 	}
 
-	public int insertSelective(Blog record) {
+	public int insertSelective(Message record) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public List<Blog> selectByExample(BlogExample example) {
-		// TODO Auto-generated method stub
-		return blogMapper.selectByExample(example);
+	public List<Message> selectByExample(MessageExample example) {
+		return messageMapper.selectByExample(example);
 	}
 
-	public Blog selectByPrimaryKey(String id) {
+	public Message selectByPrimaryKey(String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public int updateByExampleSelective(Blog record, BlogExample example) {
+	public int updateByExampleSelective(Message record, MessageExample example) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public int updateByExample(Blog record, BlogExample example) {
+	public int updateByExample(Message record, MessageExample example) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public int updateByPrimaryKeySelective(Blog record) {
+	public int updateByPrimaryKeySelective(Message record) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public int updateByPrimaryKey(Blog record) {
+	public int updateByPrimaryKey(Message record) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public Pagenation getList(Blog blog, Pagenation pagenation) {
-		BlogExample example = new BlogExample();
+	public Pagenation getList(Message message, Pagenation pagenation) {
+		MessageExample example = new MessageExample();
 		long count = countByExample(example);
 		pagenation.setDataCount(count);
 		if(count > 0 && pagenation.searcha) {
-			List<BlogVO> result = new ArrayList<BlogVO>();
+			List<MessageVO> result = new ArrayList<MessageVO>();
 			example.setPagenation(pagenation);
-			List<Blog> list = selectByExample(example);
+			List<Message> list = selectByExample(example);
 			Validate validate = new Validate();
 			User user = validate.isLogin();
-			for(Blog b : list) {
-				BlogVO blogVO = BlogVO.toBlogVO(b);
+			for(Message m : list) {
+				MessageVO messageVO = MessageVO.toMessageVO(m);
 				
 				//查询点赞数量
 				FabulousExample fabulousExample = new FabulousExample();
 				Criteria criteria = fabulousExample.createCriteria();
-				criteria.andBlogIdEqualTo(b.getId());
+				criteria.andBlogIdEqualTo(m.getId());
 				long fabulousCount = fabulousMapper.countByExample(fabulousExample);
-				blogVO.setFablousCount(fabulousCount);
+				messageVO.setFablousCount(fabulousCount);
 				
 				//查询评论数量
 				CommentExample commentExample = new CommentExample();
 				CriteriaComment commentCriteria = commentExample.createCriteria();
-				commentCriteria.andBlogIdEqualTo(b.getId());
+				commentCriteria.andBlogIdEqualTo(m.getId());
 				long commentCount = commentMapper.countByExample(commentExample);
-				blogVO.setCommentCount(commentCount);
+				messageVO.setCommentCount(commentCount);
 				
 				if(user != null) {
 					//查询当前用户点赞数量
 					criteria.andUserIdEqualTo(user.getId());
 					long userFabulousCount = fabulousMapper.countByExample(fabulousExample);
-					blogVO.setFablous(userFabulousCount==0);
+					messageVO.setFablous(userFabulousCount==0);
 					
 					//查询当前用户评论数量
 					commentCriteria.andUserIdEqualTo(user.getId());
 					long usercommentCount = commentMapper.countByExample(commentExample);
-					blogVO.setComment(usercommentCount==0);
+					messageVO.setComment(usercommentCount==0);
 				}
-				result.add(blogVO);
+				result.add(messageVO);
 			}
 			pagenation.setPageDatas(result);
 		}
 		return pagenation;
 	}
+
 }

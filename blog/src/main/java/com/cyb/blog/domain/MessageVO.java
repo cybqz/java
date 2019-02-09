@@ -1,8 +1,10 @@
 package com.cyb.blog.domain;
 
-public class BlogVO extends Blog {
+import java.util.Date;
+
+public class MessageVO extends Message{
 	
-	private boolean comment = false;
+private boolean comment = false;
 	
 	private boolean fablous = false;
 
@@ -52,14 +54,14 @@ public class BlogVO extends Blog {
 		this.fowardCount = fowardCount;
 	}
 	
-	public static BlogVO toBlogVO(Blog blog) {
-		BlogVO blogVO = new BlogVO();
-		blogVO.setId(blog.getId());
-		blogVO.setTitle(blog.getTitle());
-		blogVO.setAuthor(blog.getAuthor());
-		blogVO.setCreatetime(blog.getCreatetime());
-		blogVO.setContaint(blog.getContaint());
-		blogVO.setImage(blog.getImage());
-		return blogVO;
+	public static MessageVO toMessageVO(Message message) {
+		MessageVO messageVO = new MessageVO();
+		messageVO.setId(message.getId());
+		messageVO.setTitle(message.getTitle());
+		messageVO.setAuthor(message.getAuthor());
+		messageVO.setCreatetime(message.getCreatetime());
+		messageVO.setMessage(message.getMessage());
+		messageVO.setImage(message.getImage());
+		return messageVO;
 	}
 }

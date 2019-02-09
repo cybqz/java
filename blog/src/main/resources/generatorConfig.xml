@@ -7,6 +7,6 @@
     <sqlMapGenerator targetPackage="com.cyb.blog.mapper" targetProject="blog" />
     <javaClientGenerator type="XMLMAPPER" targetPackage="com.cyb.blog.dao" targetProject="blog" />
     <!-- <table schema="" tableName="user"></table> -->
-    <table schema="" tableName="reading"></table>
+    <table schema="" tableName="message"></table>
   </context>
 </generatorConfiguration>

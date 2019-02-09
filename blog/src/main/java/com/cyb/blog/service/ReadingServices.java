@@ -2,8 +2,6 @@ package com.cyb.blog.service;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
-
-import com.cyb.blog.domain.Blog;
 import com.cyb.blog.domain.Reading;
 import com.cyb.blog.domain.ReadingExample;
 import com.cyb.blog.entity.Pagenation;

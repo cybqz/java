@@ -8,7 +8,7 @@ import com.cyb.blog.domain.Foward;
 import com.cyb.blog.domain.FowardExample;
 import com.cyb.blog.service.FowardServices;
 
-@Service(value="FowardServices")
+@Service(value="fowardServices")
 public class FowardServicesImpl implements FowardServices {
 
 	@Resource
