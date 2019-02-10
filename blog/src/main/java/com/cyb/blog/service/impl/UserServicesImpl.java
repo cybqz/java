@@ -2,7 +2,6 @@ package com.cyb.blog.service.impl;
 
 import java.util.List;
 import java.util.Set;
-
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.cyb.blog.dao.UserMapper;
@@ -32,9 +31,17 @@ public class UserServicesImpl implements UserServices {
 		return 0;
 	}
 
-	public int insert(User record) {
+	public int insert(User record, String basePath) {
 		String password = MyStringUtils.encryptionMD5(record.getPassword());
 		record.setPassword(password);
+		Integer sex = record.getSex();
+		String image = "/headportrait/";
+		if(sex == 0) {
+			image += "gril.png";
+		}else {
+			image += "boy.png";
+		}
+		record.setImage(image);
 		return userMapper.insert(record);
 	}
 
@@ -44,7 +51,6 @@ public class UserServicesImpl implements UserServices {
 	}
 
 	public List<User> selectByExample(UserExample example) {
-		// TODO Auto-generated method stub
 		return userMapper.selectByExample(example);
 	}
 
