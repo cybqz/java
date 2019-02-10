@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cyb.blog.domain.Comment;
 import com.cyb.blog.domain.Fabulous;
 import com.cyb.blog.domain.FabulousExample;
 import com.cyb.blog.domain.User;
@@ -15,6 +17,7 @@ import com.cyb.blog.domain.FabulousExample.Criteria;
 import com.cyb.blog.domain.Message;
 import com.cyb.blog.entity.Pagenation;
 import com.cyb.blog.entity.Tips;
+import com.cyb.blog.service.CommentServices;
 import com.cyb.blog.service.FabulousServices;
 import com.cyb.blog.service.MessageServices;
 import com.cyb.blog.utils.Validate;
@@ -28,6 +31,8 @@ public class MessageController {
 	private MessageServices messageServices;
 	@Autowired
 	private FabulousServices fabulousServices;
+	@Autowired
+	private CommentServices commentServices;
 	
 	@RequestMapping(value="/publish")
 	@ResponseBody
@@ -37,14 +42,12 @@ public class MessageController {
 		User user = validate.validateAll(tips, null, null);
 		if(tips.isValidate()) {
 			tips.setValidate(false);
-			if(StringUtils.isBlank(message.getTitle())) {
-				tips.setMsg("空的标题！");
-			}else if(StringUtils.isBlank(message.getMessage())) {
+			if(StringUtils.isBlank(message.getMessage())) {
 				tips.setMsg("空的内容！");
 			}else {
 				message.setAuthor(user.getId());
 				int count = messageServices.insert(message);
-				if(count > 1) {
+				if(count > 0) {
 					tips = new Tips("true", true);
 				}
 			}
@@ -57,6 +60,29 @@ public class MessageController {
 	public Pagenation getList (Message message, Pagenation pagenation) {
 		pagenation = messageServices.getList(message, pagenation);
 		return pagenation;
+	}
+	
+	@RequestMapping(value="/reply")
+	@ResponseBody
+	public Tips reply (Comment comment) {
+		Validate validate = new Validate();
+		Tips tips = new Tips("false", false);
+		User user = validate.validateAll(tips, null, null);
+		if(tips.isValidate()) {
+			tips.setValidate(false);
+			if(StringUtils.isBlank(comment.getCommentContaint())){
+				tips.setMsg("空的内容");
+			}else if(StringUtils.isBlank(comment.getBlogId())){
+				tips.setMsg("空的评论对象");
+			}else {
+				comment.setCommentUserId(user.getId());
+				int count = commentServices.insert(comment);
+				if(count > 0) {
+					tips = new Tips("true", true);
+				}
+			}
+		}
+		return tips;
 	}
 	
 	@RequestMapping(value="/doFablous")

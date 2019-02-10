@@ -10,7 +10,6 @@ import com.cyb.blog.dao.CommentMapper;
 import com.cyb.blog.dao.FabulousMapper;
 import com.cyb.blog.dao.MessageMapper;
 import com.cyb.blog.domain.CommentExample;
-import com.cyb.blog.domain.CommentExample.CriteriaComment;
 import com.cyb.blog.domain.FabulousExample;
 import com.cyb.blog.domain.FabulousExample.Criteria;
 import com.cyb.blog.domain.Message;
@@ -92,6 +91,7 @@ public class MessageServicesImpl implements MessageServices {
 		if(count > 0 && pagenation.searcha) {
 			List<MessageVO> result = new ArrayList<MessageVO>();
 			example.setPagenation(pagenation);
+			example.setOrderByClause("createtime desc");
 			List<Message> list = selectByExample(example);
 			Validate validate = new Validate();
 			User user = validate.isLogin();
@@ -107,7 +107,7 @@ public class MessageServicesImpl implements MessageServices {
 				
 				//查询评论数量
 				CommentExample commentExample = new CommentExample();
-				CriteriaComment commentCriteria = commentExample.createCriteria();
+				com.cyb.blog.domain.CommentExample.Criteria commentCriteria = commentExample.createCriteria();
 				commentCriteria.andBlogIdEqualTo(m.getId());
 				long commentCount = commentMapper.countByExample(commentExample);
 				messageVO.setCommentCount(commentCount);

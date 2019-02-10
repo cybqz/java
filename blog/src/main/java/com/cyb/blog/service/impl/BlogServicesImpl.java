@@ -13,7 +13,6 @@ import com.cyb.blog.domain.Blog;
 import com.cyb.blog.domain.BlogExample;
 import com.cyb.blog.domain.BlogVO;
 import com.cyb.blog.domain.CommentExample;
-import com.cyb.blog.domain.CommentExample.CriteriaComment;
 import com.cyb.blog.domain.FabulousExample;
 import com.cyb.blog.domain.FabulousExample.Criteria;
 import com.cyb.blog.domain.User;
@@ -108,7 +107,7 @@ public class BlogServicesImpl implements BlogServices {
 				
 				//查询评论数量
 				CommentExample commentExample = new CommentExample();
-				CriteriaComment commentCriteria = commentExample.createCriteria();
+				com.cyb.blog.domain.CommentExample.Criteria commentCriteria = commentExample.createCriteria();
 				commentCriteria.andBlogIdEqualTo(b.getId());
 				long commentCount = commentMapper.countByExample(commentExample);
 				blogVO.setCommentCount(commentCount);

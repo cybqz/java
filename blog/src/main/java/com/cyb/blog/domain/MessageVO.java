@@ -1,7 +1,5 @@
 package com.cyb.blog.domain;
 
-import java.util.Date;
-
 public class MessageVO extends Message{
 	
 private boolean comment = false;
@@ -57,7 +55,6 @@ private boolean comment = false;
 	public static MessageVO toMessageVO(Message message) {
 		MessageVO messageVO = new MessageVO();
 		messageVO.setId(message.getId());
-		messageVO.setTitle(message.getTitle());
 		messageVO.setAuthor(message.getAuthor());
 		messageVO.setCreatetime(message.getCreatetime());
 		messageVO.setMessage(message.getMessage());

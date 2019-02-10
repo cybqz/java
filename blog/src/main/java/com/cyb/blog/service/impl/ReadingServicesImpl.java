@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.UUID;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
-
 import com.cyb.blog.dao.CommentMapper;
 import com.cyb.blog.dao.FabulousMapper;
 import com.cyb.blog.dao.ReadingMapper;
@@ -18,7 +17,6 @@ import com.cyb.blog.domain.ReadingExample;
 import com.cyb.blog.domain.ReadingExample.CriteriaReading;
 import com.cyb.blog.domain.ReadingVO;
 import com.cyb.blog.domain.User;
-import com.cyb.blog.domain.CommentExample.CriteriaComment;
 import com.cyb.blog.entity.Pagenation;
 import com.cyb.blog.service.ReadingServices;
 import com.cyb.blog.utils.Validate;
@@ -112,7 +110,7 @@ public class ReadingServicesImpl implements ReadingServices {
 				
 				//查询评论数量
 				CommentExample commentExample = new CommentExample();
-				CriteriaComment commentCriteria = commentExample.createCriteria();
+				com.cyb.blog.domain.CommentExample.Criteria commentCriteria = commentExample.createCriteria();
 				commentCriteria.andBlogIdEqualTo(r.getId());
 				long commentCount = commentMapper.countByExample(commentExample);
 				readingVO.setCommentCount(commentCount);
