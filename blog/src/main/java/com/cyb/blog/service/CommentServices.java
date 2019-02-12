@@ -2,6 +2,8 @@ package com.cyb.blog.service;
 
 import com.cyb.blog.domain.Comment;
 import com.cyb.blog.domain.CommentExample;
+import com.cyb.blog.entity.Pagenation;
+
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -93,4 +95,6 @@ public interface CommentServices {
      * @mbg.generated Sun Jan 27 13:11:27 CST 2019
      */
     int updateByPrimaryKey(Comment record);
+
+	Pagenation getList(Comment comment, Pagenation pagenation);
 }

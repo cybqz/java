@@ -30,9 +30,9 @@ public class CustomRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         logger.info("======用户授权认证======");
-        String userName = principalCollection.getPrimaryPrincipal().toString();
+        User user = (User) principalCollection.getPrimaryPrincipal();
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.setRoles(userServices.queryRolesByName(userName));
+        simpleAuthorizationInfo.setRoles(userServices.queryRolesByName(user.getUserName()));
         return simpleAuthorizationInfo;
     }
     /**

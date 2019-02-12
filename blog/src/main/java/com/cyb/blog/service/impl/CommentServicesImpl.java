@@ -1,17 +1,24 @@
 package com.cyb.blog.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import com.cyb.blog.dao.CommentMapper;
 import com.cyb.blog.dao.MessageMapper;
+import com.cyb.blog.dao.UserMapper;
 import com.cyb.blog.domain.Comment;
 import com.cyb.blog.domain.CommentExample;
+import com.cyb.blog.domain.CommentVO;
 import com.cyb.blog.domain.Message;
+import com.cyb.blog.domain.User;
 import com.cyb.blog.entity.Constant;
+import com.cyb.blog.entity.Pagenation;
 import com.cyb.blog.service.CommentServices;
 
 @Service(value="commentServices")
@@ -21,6 +28,8 @@ public class CommentServicesImpl implements CommentServices {
 	private CommentMapper commentMapper;
 	@Resource
 	private MessageMapper messageMapper;
+	@Resource
+	private UserMapper userMapper;
 	
 	public long countByExample(CommentExample example) {
 		// TODO Auto-generated method stub
@@ -84,5 +93,29 @@ public class CommentServicesImpl implements CommentServices {
 	public int updateByPrimaryKey(Comment record) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public Pagenation getList(Comment commentParam, Pagenation pagenation) {
+		String id = commentParam.getBlogId();
+		if(StringUtils.isNoneBlank(id)) {
+			List<CommentVO> commentVOs = new ArrayList<CommentVO>();
+			CommentExample example = new CommentExample();
+			com.cyb.blog.domain.CommentExample.Criteria criteria = example.createCriteria();
+			criteria.andModalEqualTo(Constant.MODAL_LYB);
+			criteria.andBlogIdEqualTo(id);
+			List<Comment> list = commentMapper.selectByExample(example);
+			for(Comment comment : list) {
+				CommentVO commentVO = CommentVO.toCommentVO(comment);
+				User user = userMapper.selectByPrimaryKey(comment.getUserId());
+				commentVO.setUserName(user.getUserName());
+				commentVO.setUserImage(user.getImage());
+				User commentUser = userMapper.selectByPrimaryKey(comment.getCommentUserId());
+				commentVO.setCommentUserName(commentUser.getUserName());
+				commentVO.setCommentUserImage(commentUser.getImage());
+				commentVOs.add(commentVO);
+			}
+			pagenation.setPageDatas(commentVOs);
+		}
+		return pagenation;
 	}
 }

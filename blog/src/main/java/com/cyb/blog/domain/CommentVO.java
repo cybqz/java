@@ -1,8 +1,8 @@
 package com.cyb.blog.domain;
 
-public class MessageVO extends Message{
+public class CommentVO extends Comment{
 	
-private boolean comment = false;
+	private boolean comment = false;
 	
 	private boolean fablous = false;
 
@@ -15,6 +15,12 @@ private boolean comment = false;
 	private String userName;
 	
 	private String userImage;
+	
+	private String commentUserName;
+	
+	private String commentUserImage;
+	
+	
 	
 	public boolean isComment() {
 		return comment;
@@ -72,12 +78,25 @@ private boolean comment = false;
 		this.userImage = userImage;
 	}
 
-	public static MessageVO toMessageVO(Message message) {
-		MessageVO messageVO = new MessageVO();
-		messageVO.setId(message.getId());
-		messageVO.setCreatetime(message.getCreatetime());
-		messageVO.setMessage(message.getMessage());
-		messageVO.setImage(message.getImage());
-		return messageVO;
+	public String getCommentUserName() {
+		return commentUserName;
+	}
+
+	public void setCommentUserName(String commentUserName) {
+		this.commentUserName = commentUserName;
+	}
+	
+	public String getCommentUserImage() {
+		return commentUserImage;
+	}
+
+	public void setCommentUserImage(String commentUserImage) {
+		this.commentUserImage = commentUserImage;
+	}
+
+	public static CommentVO toCommentVO(Comment comment) {
+		CommentVO commentVO = new CommentVO();
+		commentVO.setCommentDate(comment.getCommentDate());
+		return commentVO;
 	}
 }

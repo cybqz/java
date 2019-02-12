@@ -13,6 +13,7 @@ import com.cyb.blog.domain.Fabulous;
 import com.cyb.blog.domain.FabulousExample;
 import com.cyb.blog.domain.User;
 import com.cyb.blog.domain.FabulousExample.Criteria;
+import com.cyb.blog.entity.Constant;
 import com.cyb.blog.entity.Pagenation;
 import com.cyb.blog.entity.Tips;
 import com.cyb.blog.service.BlogServices;
@@ -34,7 +35,7 @@ public class BlogController {
 	public Tips publish (Blog blog) {
 		Validate validate = new Validate();
 		Tips tips = new Tips("false", false);
-		User user = validate.validateAll(tips, null, null);
+		User user = validate.validateAll(tips, Constant.ROLE_ADMIN, null);
 		if(tips.isValidate()) {
 			tips.setValidate(false);
 			if(StringUtils.isBlank(blog.getTitle())) {

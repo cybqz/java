@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.cyb.blog.dao.CommentMapper;
 import com.cyb.blog.dao.FabulousMapper;
 import com.cyb.blog.dao.MessageMapper;
+import com.cyb.blog.dao.UserMapper;
 import com.cyb.blog.domain.CommentExample;
 import com.cyb.blog.domain.FabulousExample;
 import com.cyb.blog.domain.FabulousExample.Criteria;
@@ -29,6 +30,8 @@ public class MessageServicesImpl implements MessageServices {
 	private FabulousMapper fabulousMapper;
 	@Resource
 	private CommentMapper commentMapper;
+	@Resource
+	private UserMapper userMapper;
 	
 	public long countByExample(MessageExample example) {
 		return messageMapper.countByExample(example);
@@ -96,7 +99,10 @@ public class MessageServicesImpl implements MessageServices {
 			Validate validate = new Validate();
 			User user = validate.isLogin();
 			for(Message m : list) {
+				User author = userMapper.selectByPrimaryKey(m.getAuthor());
 				MessageVO messageVO = MessageVO.toMessageVO(m);
+				messageVO.setUserName(author.getUserName());
+				messageVO.setUserImage(author.getImage());
 				
 				//查询点赞数量
 				FabulousExample fabulousExample = new FabulousExample();
@@ -129,5 +135,4 @@ public class MessageServicesImpl implements MessageServices {
 		}
 		return pagenation;
 	}
-
 }

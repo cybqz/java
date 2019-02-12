@@ -15,6 +15,7 @@ import com.cyb.blog.domain.FabulousExample;
 import com.cyb.blog.domain.User;
 import com.cyb.blog.domain.FabulousExample.Criteria;
 import com.cyb.blog.domain.Message;
+import com.cyb.blog.entity.Constant;
 import com.cyb.blog.entity.Pagenation;
 import com.cyb.blog.entity.Tips;
 import com.cyb.blog.service.CommentServices;
@@ -39,7 +40,7 @@ public class MessageController {
 	public Tips publish (Message message) {
 		Validate validate = new Validate();
 		Tips tips = new Tips("false", false);
-		User user = validate.validateAll(tips, null, null);
+		User user = validate.validateAll(tips, Constant.ROLE_ADMIN, null);
 		if(tips.isValidate()) {
 			tips.setValidate(false);
 			if(StringUtils.isBlank(message.getMessage())) {
