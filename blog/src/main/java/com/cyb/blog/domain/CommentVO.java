@@ -97,6 +97,7 @@ public class CommentVO extends Comment{
 	public static CommentVO toCommentVO(Comment comment) {
 		CommentVO commentVO = new CommentVO();
 		commentVO.setCommentDate(comment.getCommentDate());
+		commentVO.setCommentContaint(comment.getCommentContaint());
 		return commentVO;
 	}
 }
