@@ -86,6 +86,39 @@ public class MessageController {
 		return tips;
 	}
 	
+	/**
+	   双人互怼
+	 * @param comment
+	 * @return
+	 */
+	@RequestMapping(value="/innerReply")
+	@ResponseBody
+	public Tips innerReply (Comment comment) {
+		Validate validate = new Validate();
+		Tips tips = new Tips("false", false);
+		User user = validate.validateAll(tips, null, null);
+		if(tips.isValidate()) {
+			tips.setValidate(false);
+			String userId = commentServices.innerReplyValidate(user, comment);
+			if(StringUtils.isNotBlank(userId)) {
+				if(StringUtils.isBlank(comment.getCommentContaint())){
+					tips.setMsg("空的内容");
+				}else {
+					comment.setBlogId(comment.getId());
+					comment.setUserId(user.getId());
+					comment.setCommentUserId(userId);
+					int count = commentServices.innerInsert(comment);
+					if(count > 0) {
+						tips = new Tips("true", true);
+					}
+				}
+			}else {
+				tips.setMsg("请尊重验证！");
+			}
+		}
+		return tips;
+	}
+	
 	@RequestMapping(value="/doFablous")
 	@ResponseBody
 	public Tips doFablous (Message message) {

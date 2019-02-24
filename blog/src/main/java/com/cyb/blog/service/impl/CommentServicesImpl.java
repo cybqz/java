@@ -59,6 +59,13 @@ public class CommentServicesImpl implements CommentServices {
 			return 0;
 		}
 	}
+	
+	public int innerInsert(Comment record) {
+		record.setId(UUID.randomUUID().toString());
+		record.setCommentDate(new Date());
+		record.setModal(Constant.MODAL_LYB_INNER_REP);
+		return commentMapper.insert(record);
+	}
 
 	public int insertSelective(Comment record) {
 		// TODO Auto-generated method stub
@@ -97,7 +104,7 @@ public class CommentServicesImpl implements CommentServices {
 
 	public Pagenation getList(Comment commentParam, Pagenation pagenation) {
 		String id = commentParam.getBlogId();
-		if(StringUtils.isNoneBlank(id)) {
+		if(StringUtils.isNotBlank(id)) {
 			List<CommentVO> commentVOs = new ArrayList<CommentVO>();
 			CommentExample example = new CommentExample();
 			com.cyb.blog.domain.CommentExample.Criteria criteria = example.createCriteria();
@@ -117,5 +124,19 @@ public class CommentServicesImpl implements CommentServices {
 			pagenation.setPageDatas(commentVOs);
 		}
 		return pagenation;
+	}
+
+	public String innerReplyValidate(User user, Comment commentParam) {
+		String id = commentParam.getId();
+		if(StringUtils.isNotBlank(id)) {
+			Comment comment = commentMapper.selectByPrimaryKey(id);
+			String loginedUserId = user.getId();
+			String blogUserId = comment.getUserId();
+			String commentUserId = comment.getCommentUserId();
+			if((loginedUserId.equals(blogUserId) || loginedUserId.equals(commentUserId))) {
+				return commentUserId;
+			}
+		}
+		return null;
 	}
 }

@@ -13,6 +13,7 @@ public class Constant {
 	
 	
 	public static String MODAL_LYB = "lyb";
+	public static String MODAL_LYB_INNER_REP = "lybinnerrep";
 	public static String MODAL_DZ = "dz";
 	public static String MODAL_DY = "dy";
 	

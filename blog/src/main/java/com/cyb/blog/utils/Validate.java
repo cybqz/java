@@ -29,9 +29,9 @@ public class Validate {
 		User user = isLogin();
 		//登录验证
 		if(user != null) {
-			if(StringUtils.isNoneBlank(role) && !subject.hasRole(role)) {
+			if(StringUtils.isNotBlank(role) && !subject.hasRole(role)) {
 				tips.setMsg("您没有相关角色支持操作！");
-			}else if(StringUtils.isNoneBlank(permission) && !subject.isPermitted(permission)) {
+			}else if(StringUtils.isNotBlank(permission) && !subject.isPermitted(permission)) {
 				tips.setMsg("您没有相关权限支持操作！");
 			}else {
 				tips.setValidate(true);

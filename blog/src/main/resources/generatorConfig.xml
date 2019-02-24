@@ -2,7 +2,7 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
   <context id="context1">
-    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://114.115.134.1:3306/blog" userId="root" password="root" />
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/blog" userId="root" password="root" />
     <javaModelGenerator targetPackage="com.cyb.blog.domain" targetProject="blog" />
     <sqlMapGenerator targetPackage="com.cyb.blog.mapper" targetProject="blog" />
     <javaClientGenerator type="XMLMAPPER" targetPackage="com.cyb.blog.dao" targetProject="blog" />
