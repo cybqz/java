@@ -8,20 +8,31 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import com.cyb.blog.interceptor.TalkWebSockettHandler;
-import com.cyb.blog.interceptor.WebSocketPushHandler;
+import com.cyb.blog.interceptor.SiteWebSocketPushHandler;
+import com.cyb.blog.interceptor.SiteWebSockettHandler;
+import com.cyb.blog.interceptor.TalkWebSocketPushHandler;
 
 @Configuration
 @EnableWebSocket
 public class WebSocketConfig extends WebMvcConfigurerAdapter implements WebSocketConfigurer {
 
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(myHandler(), "/talkWebSocketService")
+		registry.addHandler(talkHandler(), "/talkService")
 		.addInterceptors(new TalkWebSockettHandler())
+		.setAllowedOrigins("*");
+		
+		registry.addHandler(siteHandler(), "/siteService")
+		.addInterceptors(new SiteWebSockettHandler())
 		.setAllowedOrigins("*");
 	}
 	
 	@Bean
-    public WebSocketHandler myHandler() {
-        return new WebSocketPushHandler();
+    public WebSocketHandler talkHandler() {
+        return new TalkWebSocketPushHandler();
+    }
+	
+	@Bean
+    public WebSocketHandler siteHandler() {
+        return new SiteWebSocketPushHandler();
     }
 }

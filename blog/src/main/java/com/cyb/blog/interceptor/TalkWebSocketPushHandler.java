@@ -5,7 +5,7 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-public class WebSocketPushHandler implements WebSocketHandler {
+public class TalkWebSocketPushHandler implements WebSocketHandler {
 
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		
