@@ -1,6 +1,9 @@
 package com.cyb.blog.controller;
 
 import java.util.UUID;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import com.cyb.blog.domain.User;
 import com.cyb.blog.entity.Tips;
+import com.cyb.blog.service.UserServices;
 import com.cyb.blog.utils.Validate;
 
 @CrossOrigin
@@ -16,14 +20,36 @@ import com.cyb.blog.utils.Validate;
 @RequestMapping(value="/userController")
 public class UserController {
 	
+	@Autowired
+	private UserServices userSerivces;
+	
 	@RequestMapping(value="/update")
 	@ResponseBody
 	public Tips update (User user) {
 		Validate validate = new Validate();
 		Tips tips = new Tips("false", false);
-		User loginedUser = validate.validateAll(tips, null, null);
-		if(tips.isValidate()) {
-			tips.setValidate(false);
+		User loginedUser = validate.isLogin();
+		if(loginedUser != null) {
+			if(StringUtils.isBlank(user.getName())) {
+				tips.setMsg("用户名不能为空！");
+			}else if(StringUtils.isBlank(user.getUserName())) {
+				tips.setMsg("姓名不能为空！");
+			}else if(StringUtils.isBlank(user.getEmail())) {
+				tips.setMsg("邮箱地址不能为空！");
+			}else if(StringUtils.isBlank(user.getPhone())) {
+				tips.setMsg("联系方式不能为空！");
+			}else {
+				loginedUser.setName(user.getName());
+				loginedUser.setEmail(user.getEmail());
+				loginedUser.setPhone(user.getPhone());
+				loginedUser.setUserName(user.getUserName());
+				int count = userSerivces.updateByPrimaryKey(loginedUser);
+				if(count > 0) {
+					tips = new Tips("修改成功！", true);
+				}else {
+					tips.setMsg("修改失败！");
+				}
+			}
 		}
 		return tips;
 	}

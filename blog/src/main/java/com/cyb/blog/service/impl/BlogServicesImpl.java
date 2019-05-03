@@ -18,11 +18,14 @@ import com.cyb.blog.domain.FabulousExample.Criteria;
 import com.cyb.blog.domain.User;
 import com.cyb.blog.entity.Pagenation;
 import com.cyb.blog.service.BlogServices;
+import com.cyb.blog.service.UserServices;
 import com.cyb.blog.utils.Validate;
 
 @Service(value="blogServices")
 public class BlogServicesImpl implements BlogServices {
 
+	@Resource
+	private UserServices userServices;
 	@Resource
 	private BlogMapper blogMapper;
 	@Resource
@@ -92,11 +95,16 @@ public class BlogServicesImpl implements BlogServices {
 		if(count > 0 && pagenation.searcha) {
 			List<BlogVO> result = new ArrayList<BlogVO>();
 			example.setPagenation(pagenation);
+			example.setOrderByClause("createtime desc");
 			List<Blog> list = selectByExample(example);
 			Validate validate = new Validate();
 			User user = validate.isLogin();
 			for(Blog b : list) {
 				BlogVO blogVO = BlogVO.toBlogVO(b);
+				
+				//设置作者用户名
+				User author = userServices.selectByPrimaryKey(b.getAuthor());
+				blogVO.setAuthorName(author.getUserName());
 				
 				//查询点赞数量
 				FabulousExample fabulousExample = new FabulousExample();

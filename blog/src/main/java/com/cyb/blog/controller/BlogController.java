@@ -45,7 +45,7 @@ public class BlogController {
 			}else {
 				blog.setAuthor(user.getId());
 				int count = blogServices.insert(blog);
-				if(count > 1) {
+				if(count > 0) {
 					tips = new Tips("true", true);
 				}
 			}

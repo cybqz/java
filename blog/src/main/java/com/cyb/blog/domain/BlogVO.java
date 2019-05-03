@@ -12,6 +12,8 @@ public class BlogVO extends Blog {
 	
 	private long fowardCount = 0;
 	
+	private String authorName;
+	
 	public boolean isComment() {
 		return comment;
 	}
@@ -52,6 +54,14 @@ public class BlogVO extends Blog {
 		this.fowardCount = fowardCount;
 	}
 	
+	public String getAuthorName() {
+		return authorName;
+	}
+
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
+	}
+
 	public static BlogVO toBlogVO(Blog blog) {
 		BlogVO blogVO = new BlogVO();
 		blogVO.setId(blog.getId());

@@ -55,8 +55,7 @@ public class UserServicesImpl implements UserServices {
 	}
 
 	public User selectByPrimaryKey(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return userMapper.selectByPrimaryKey(id);
 	}
 
 	public int updateByExampleSelective(User record, UserExample example) {
@@ -75,8 +74,7 @@ public class UserServicesImpl implements UserServices {
 	}
 
 	public int updateByPrimaryKey(User record) {
-		// TODO Auto-generated method stub
-		return 0;
+		return userMapper.updateByPrimaryKey(record);
 	}
 
 	public Set<String> queryRolesByName(String userName) {
