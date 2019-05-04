@@ -1,7 +1,8 @@
 package com.cyb.blog.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import com.cyb.blog.domain.User;
+import com.cyb.blog.domain.UserRole;
+import com.cyb.blog.domain.UserRoleExample;
+import com.cyb.blog.domain.UserRoleExample.UserRoleCriteria;
+import com.cyb.blog.domain.UserRolePermissionVO;
+import com.cyb.blog.domain.Permission;
+import com.cyb.blog.domain.RolePermission;
+import com.cyb.blog.domain.RolePermissionExample;
+import com.cyb.blog.domain.RolePermissionVO;
+import com.cyb.blog.domain.RolePermissionExample.RolePermissionCriteria;
 import com.cyb.blog.entity.Tips;
+import com.cyb.blog.service.PermissionServices;
+import com.cyb.blog.service.RolePermissionServices;
+import com.cyb.blog.service.UserRoleServices;
 import com.cyb.blog.service.UserServices;
 import com.cyb.blog.utils.Validate;
 
@@ -22,6 +35,12 @@ public class UserController {
 	
 	@Autowired
 	private UserServices userSerivces;
+	@Autowired
+	private UserRoleServices userRoleServices;
+	@Autowired
+	private PermissionServices permissionServices;
+	@Autowired
+	private RolePermissionServices rolePermissionServices;
 	
 	@RequestMapping(value="/update")
 	@ResponseBody
@@ -78,10 +97,49 @@ public class UserController {
             	}
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
-			} /*catch (IOException e) {
-				e.printStackTrace();
-			}*/
+			}
 		}
 		return tips;
+	}
+	
+	@RequestMapping(value="/getUser")
+	@ResponseBody
+	public UserRolePermissionVO getUser () {
+		Validate validate = new Validate();
+		User user = validate.isLogin();
+		UserRolePermissionVO userRolePermissionVO = null;
+		if(user != null) {
+			userRolePermissionVO = UserRolePermissionVO.toUserRolePermissionVO(user);
+			//查询当前用户角色
+			UserRoleExample userRoleExample = new UserRoleExample();
+			UserRoleCriteria userRoleCriteria =  userRoleExample.createCriteria();
+			userRoleCriteria.andUserIdEqualTo(user.getId());
+			List<UserRole> userRoles = userRoleServices.selectByExample(userRoleExample);
+			if(userRoles != null && userRoles.size() > 0) {
+				List<RolePermissionVO> rolePermissionVOs = new ArrayList<RolePermissionVO>();
+				for(UserRole userRole : userRoles) {
+					
+					RolePermissionVO rolePermissionVO = RolePermissionVO.toRolePermissionVO(userRole);
+					//查询当前角色的权限
+					RolePermissionExample rolePermissionExample = new RolePermissionExample();
+					RolePermissionCriteria rolePermissionCriteria = rolePermissionExample.createCriteria();
+					rolePermissionCriteria.andRoleIdEqualTo(userRole.getRoleId());
+					List<RolePermission> rolePermissions = rolePermissionServices.selectByExample(rolePermissionExample);
+					if(rolePermissions != null && rolePermissions.size() > 0) {
+						List<Permission> permissions = new ArrayList<Permission>();
+						for(RolePermission rolePermission : rolePermissions) {
+							
+							//查询权限
+							Permission permission = permissionServices.selectByPrimaryKey(rolePermission.getPermissionId());
+							permissions.add(permission);
+						}
+						rolePermissionVO.setPermissions(permissions);
+					}
+					rolePermissionVOs.add(rolePermissionVO);
+				}
+				userRolePermissionVO.setUserRoles(rolePermissionVOs);
+			}
+		}
+		return userRolePermissionVO;
 	}
 }

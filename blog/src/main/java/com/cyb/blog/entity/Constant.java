@@ -11,6 +11,11 @@ public class Constant {
 	
 	public static String ROLE_ADMIN = "admin";
 	
+	public static String PERMISSION_INTERSTING_ADD = "intersting_add";
+	public static String PERMISSION_INTERSTING_REMOVE = "intersting_remove";
+	public static String PERMISSION_INTERSTING_COMMENT = "intersting_comment";
+	public static String PERMISSION_INTERSTING_FABULOUS = "intersting_fabulous";
+	
 	
 	public static String MODAL_LYB = "lyb";
 	public static String MODAL_LYB_INNER_REP = "lybinnerrep";

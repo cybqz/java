@@ -3,7 +3,6 @@ package com.cyb.blog.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cyb.blog.domain.User;
 import com.cyb.blog.entity.Tips;
 import com.cyb.blog.service.LoginServices;
-import com.cyb.blog.utils.Validate;
 
 @CrossOrigin
 @Controller
@@ -47,12 +45,5 @@ public class LoginController {
 	@ResponseBody
 	public Tips logout (User user) {
 		return loginServices.logout(user);
-	}
-	
-	@RequestMapping(value="/getUser")
-	@ResponseBody
-	public User getUser () {
-		Validate validate = new Validate();
-		return validate.isLogin();
 	}
 }

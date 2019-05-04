@@ -35,7 +35,7 @@ public class BlogController {
 	public Tips publish (Blog blog) {
 		Validate validate = new Validate();
 		Tips tips = new Tips("false", false);
-		User user = validate.validateAll(tips, Constant.ROLE_ADMIN, null);
+		User user = validate.validateAll(tips, Constant.ROLE_ADMIN, Constant.PERMISSION_INTERSTING_ADD);
 		if(tips.isValidate()) {
 			tips.setValidate(false);
 			if(StringUtils.isBlank(blog.getTitle())) {
