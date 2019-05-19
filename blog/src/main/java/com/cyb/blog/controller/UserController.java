@@ -78,9 +78,8 @@ public class UserController {
 	public Tips updateImage (@RequestParam(value = "file", required = true) MultipartFile pictureFile) {
 		Validate validate = new Validate();
 		Tips tips = new Tips("false", false);
-		User user = validate.validateAll(tips, null, null);
-		if(tips.isValidate()) {
-			tips.setValidate(false);
+		User user = validate.isLogin();
+		if(user != null) {
             try {
             	if(pictureFile != null) {
             		// 图片新名字
@@ -120,6 +119,7 @@ public class UserController {
 				for(UserRole userRole : userRoles) {
 					
 					RolePermissionVO rolePermissionVO = RolePermissionVO.toRolePermissionVO(userRole);
+					
 					//查询当前角色的权限
 					RolePermissionExample rolePermissionExample = new RolePermissionExample();
 					RolePermissionCriteria rolePermissionCriteria = rolePermissionExample.createCriteria();
