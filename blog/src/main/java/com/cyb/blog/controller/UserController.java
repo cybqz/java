@@ -73,6 +73,28 @@ public class UserController {
 		return tips;
 	}
 	
+	@RequestMapping(value="/updateIntroduce")
+	@ResponseBody
+	public Tips updateIntroduce (User user) {
+		Validate validate = new Validate();
+		Tips tips = new Tips("false", false);
+		User loginedUser = validate.isLogin();
+		if(loginedUser != null) {
+			if(StringUtils.isBlank(user.getIntroduce())) {
+				tips.setMsg("用户简介不能为空！");
+			}else {
+				loginedUser.setIntroduce(user.getIntroduce());
+				int count = userSerivces.updateByPrimaryKey(loginedUser);
+				if(count > 0) {
+					tips = new Tips("修改成功！", true);
+				}else {
+					tips.setMsg("修改失败！");
+				}
+			}
+		}
+		return tips;
+	}
+	
 	@RequestMapping(value="/updateImage")
 	@ResponseBody
 	public Tips updateImage (@RequestParam(value = "file", required = true) MultipartFile pictureFile) {
