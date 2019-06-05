@@ -6,14 +6,28 @@ import org.apache.shiro.subject.Subject;
 import com.cyb.blog.domain.User;
 import com.cyb.blog.entity.Tips;
 
-public class Validate {
+public class UserValidate {
 	
-	public User isLogin() {
+	/**
+	 * 获取当前已登录且验证通过的用户信息
+	 * @return
+	 */
+	public User isLoginAuthenticated() {
 		User user = null;
 		Subject subject = SecurityUtils.getSubject();
 		if(subject.isAuthenticated()) {
 			user = (User) subject.getPrincipal();
 		}
+		return user;
+	}
+	
+	/**
+	 * 获取当前已登录的用户信息
+	 * @return
+	 */
+	public User isLoginNoAuthenticated() {
+		Subject subject = SecurityUtils.getSubject();
+		User user = (User) subject.getPrincipal();
 		return user;
 	}
 	
@@ -26,7 +40,7 @@ public class Validate {
 	 */
 	public User validateAll(Tips tips, String role, String permission) {
 		Subject subject = SecurityUtils.getSubject();
-		User user = isLogin();
+		User user = isLoginAuthenticated();
 		//登录验证
 		if(user != null) {
 			if(StringUtils.isNotBlank(role) && !subject.hasRole(role)) {

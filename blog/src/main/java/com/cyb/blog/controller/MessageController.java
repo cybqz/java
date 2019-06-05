@@ -21,7 +21,7 @@ import com.cyb.blog.entity.Tips;
 import com.cyb.blog.service.CommentServices;
 import com.cyb.blog.service.FabulousServices;
 import com.cyb.blog.service.MessageServices;
-import com.cyb.blog.utils.Validate;
+import com.cyb.blog.utils.UserValidate;
 
 @CrossOrigin
 @Controller
@@ -38,7 +38,7 @@ public class MessageController {
 	@RequestMapping(value="/publish")
 	@ResponseBody
 	public Tips publish (Message message) {
-		Validate validate = new Validate();
+		UserValidate validate = new UserValidate();
 		Tips tips = new Tips("false", false);
 		User user = validate.validateAll(tips, Constant.ROLE_ADMIN, null);
 		if(tips.isValidate()) {
@@ -66,7 +66,7 @@ public class MessageController {
 	@RequestMapping(value="/reply")
 	@ResponseBody
 	public Tips reply (Comment comment) {
-		Validate validate = new Validate();
+		UserValidate validate = new UserValidate();
 		Tips tips = new Tips("false", false);
 		User user = validate.validateAll(tips, null, null);
 		if(tips.isValidate()) {
@@ -94,7 +94,7 @@ public class MessageController {
 	@RequestMapping(value="/innerReply")
 	@ResponseBody
 	public Tips innerReply (Comment comment) {
-		Validate validate = new Validate();
+		UserValidate validate = new UserValidate();
 		Tips tips = new Tips("false", false);
 		User user = validate.validateAll(tips, null, null);
 		if(tips.isValidate()) {
@@ -122,7 +122,7 @@ public class MessageController {
 	@RequestMapping(value="/doFablous")
 	@ResponseBody
 	public Tips doFablous (Message message) {
-		Validate validate = new Validate();
+		UserValidate validate = new UserValidate();
 		Tips tips = new Tips("false", false);
 		User user = validate.validateAll(tips, null, null);
 		if(tips.isValidate()) {

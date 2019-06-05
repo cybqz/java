@@ -26,7 +26,7 @@ import com.cyb.blog.service.PermissionServices;
 import com.cyb.blog.service.RolePermissionServices;
 import com.cyb.blog.service.UserRoleServices;
 import com.cyb.blog.service.UserServices;
-import com.cyb.blog.utils.Validate;
+import com.cyb.blog.utils.UserValidate;
 
 @CrossOrigin
 @Controller
@@ -45,9 +45,9 @@ public class UserController {
 	@RequestMapping(value="/update")
 	@ResponseBody
 	public Tips update (User user) {
-		Validate validate = new Validate();
+		UserValidate validate = new UserValidate();
 		Tips tips = new Tips("false", false);
-		User loginedUser = validate.isLogin();
+		User loginedUser = validate.isLoginAuthenticated();
 		if(loginedUser != null) {
 			if(StringUtils.isBlank(user.getName())) {
 				tips.setMsg("用户名不能为空！");
@@ -76,9 +76,9 @@ public class UserController {
 	@RequestMapping(value="/updateIntroduce")
 	@ResponseBody
 	public Tips updateIntroduce (User user) {
-		Validate validate = new Validate();
+		UserValidate validate = new UserValidate();
 		Tips tips = new Tips("false", false);
-		User loginedUser = validate.isLogin();
+		User loginedUser = validate.isLoginAuthenticated();
 		if(loginedUser != null) {
 			if(StringUtils.isBlank(user.getIntroduce())) {
 				tips.setMsg("用户简介不能为空！");
@@ -98,9 +98,9 @@ public class UserController {
 	@RequestMapping(value="/updateImage")
 	@ResponseBody
 	public Tips updateImage (@RequestParam(value = "file", required = true) MultipartFile pictureFile) {
-		Validate validate = new Validate();
+		UserValidate validate = new UserValidate();
 		Tips tips = new Tips("false", false);
-		User user = validate.isLogin();
+		User user = validate.isLoginNoAuthenticated();
 		if(user != null) {
             try {
             	if(pictureFile != null) {
@@ -126,11 +126,10 @@ public class UserController {
 	@RequestMapping(value="/getUser")
 	@ResponseBody
 	public UserRolePermissionVO getUser () {
-		Validate validate = new Validate();
-		User user = validate.isLogin();
-		UserRolePermissionVO userRolePermissionVO = null;
+		UserValidate validate = new UserValidate();
+		User user = validate.isLoginAuthenticated();
 		if(user != null) {
-			userRolePermissionVO = UserRolePermissionVO.toUserRolePermissionVO(user);
+			UserRolePermissionVO userRolePermissionVO = UserRolePermissionVO.toUserRolePermissionVO(user);
 			//查询当前用户角色
 			UserRoleExample userRoleExample = new UserRoleExample();
 			UserRoleCriteria userRoleCriteria =  userRoleExample.createCriteria();
@@ -161,7 +160,8 @@ public class UserController {
 				}
 				userRolePermissionVO.setUserRoles(rolePermissionVOs);
 			}
+			return userRolePermissionVO;
 		}
-		return userRolePermissionVO;
+		return null;
 	}
 }

@@ -18,7 +18,7 @@ import com.cyb.blog.entity.Pagenation;
 import com.cyb.blog.entity.Tips;
 import com.cyb.blog.service.BlogServices;
 import com.cyb.blog.service.FabulousServices;
-import com.cyb.blog.utils.Validate;
+import com.cyb.blog.utils.UserValidate;
 
 @CrossOrigin
 @Controller
@@ -33,7 +33,7 @@ public class BlogController {
 	@RequestMapping(value="/publish")
 	@ResponseBody
 	public Tips publish (Blog blog) {
-		Validate validate = new Validate();
+		UserValidate validate = new UserValidate();
 		Tips tips = new Tips("false", false);
 		User user = validate.validateAll(tips, Constant.ROLE_ADMIN, Constant.PERMISSION_INTERSTING_ADD);
 		if(tips.isValidate()) {
@@ -63,7 +63,7 @@ public class BlogController {
 	@RequestMapping(value="/doFablous")
 	@ResponseBody
 	public Tips doFablous (Blog blog) {
-		Validate validate = new Validate();
+		UserValidate validate = new UserValidate();
 		Tips tips = new Tips("false", false);
 		User user = validate.validateAll(tips, null, null);
 		if(tips.isValidate()) {

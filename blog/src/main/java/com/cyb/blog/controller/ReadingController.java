@@ -19,7 +19,7 @@ import com.cyb.blog.entity.Constant;
 import com.cyb.blog.entity.Tips;
 import com.cyb.blog.service.FabulousServices;
 import com.cyb.blog.service.ReadingServices;
-import com.cyb.blog.utils.Validate;
+import com.cyb.blog.utils.UserValidate;
 
 @CrossOrigin
 @Controller
@@ -34,7 +34,7 @@ public class ReadingController {
 	@RequestMapping(value="/publish")
 	@ResponseBody
 	public Tips publish (Reading reading) {
-		Validate validate = new Validate();
+		UserValidate validate = new UserValidate();
 		Tips tips = new Tips("false", false);
 		User user = validate.validateAll(tips, Constant.ROLE_ADMIN, null);
 		if(tips.isValidate()) {
@@ -66,7 +66,7 @@ public class ReadingController {
 	@RequestMapping(value="/doFablous")
 	@ResponseBody
 	public Tips doFablous (Reading reading, HttpSession session) {
-		Validate validate = new Validate();
+		UserValidate validate = new UserValidate();
 		Tips tips = new Tips("false", false);
 		User user = validate.validateAll(tips, null, null);
 		if(tips.isValidate()) {

@@ -19,7 +19,7 @@ import com.cyb.blog.domain.MessageVO;
 import com.cyb.blog.domain.User;
 import com.cyb.blog.entity.Pagenation;
 import com.cyb.blog.service.MessageServices;
-import com.cyb.blog.utils.Validate;
+import com.cyb.blog.utils.UserValidate;
 
 @Service(value="messageServices")
 public class MessageServicesImpl implements MessageServices {
@@ -96,8 +96,8 @@ public class MessageServicesImpl implements MessageServices {
 			example.setPagenation(pagenation);
 			example.setOrderByClause("createtime desc");
 			List<Message> list = selectByExample(example);
-			Validate validate = new Validate();
-			User user = validate.isLogin();
+			UserValidate validate = new UserValidate();
+			User user = validate.isLoginAuthenticated();
 			for(Message m : list) {
 				User author = userMapper.selectByPrimaryKey(m.getAuthor());
 				MessageVO messageVO = MessageVO.toMessageVO(m);

@@ -19,7 +19,7 @@ import com.cyb.blog.domain.User;
 import com.cyb.blog.entity.Pagenation;
 import com.cyb.blog.service.BlogServices;
 import com.cyb.blog.service.UserServices;
-import com.cyb.blog.utils.Validate;
+import com.cyb.blog.utils.UserValidate;
 
 @Service(value="blogServices")
 public class BlogServicesImpl implements BlogServices {
@@ -97,8 +97,8 @@ public class BlogServicesImpl implements BlogServices {
 			example.setPagenation(pagenation);
 			example.setOrderByClause("createtime desc");
 			List<Blog> list = selectByExample(example);
-			Validate validate = new Validate();
-			User user = validate.isLogin();
+			UserValidate validate = new UserValidate();
+			User user = validate.isLoginAuthenticated();
 			for(Blog b : list) {
 				BlogVO blogVO = BlogVO.toBlogVO(b);
 				

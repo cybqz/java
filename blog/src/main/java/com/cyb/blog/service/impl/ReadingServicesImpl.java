@@ -19,7 +19,7 @@ import com.cyb.blog.domain.ReadingVO;
 import com.cyb.blog.domain.User;
 import com.cyb.blog.entity.Pagenation;
 import com.cyb.blog.service.ReadingServices;
-import com.cyb.blog.utils.Validate;
+import com.cyb.blog.utils.UserValidate;
 
 @Service(value="readingServices")
 public class ReadingServicesImpl implements ReadingServices {
@@ -96,8 +96,8 @@ public class ReadingServicesImpl implements ReadingServices {
 			CriteriaReading readingCriteria = example.createCriteria();
 			readingCriteria.andModalEqualTo(reading.getModal());
 			List<Reading> list = selectByExample(example);
-			Validate validate = new Validate();
-			User user = validate.isLogin();
+			UserValidate validate = new UserValidate();
+			User user = validate.isLoginAuthenticated();
 			for(Reading r : list) {
 				ReadingVO readingVO = ReadingVO.toBlog(r);
 				

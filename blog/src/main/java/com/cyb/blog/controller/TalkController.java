@@ -18,7 +18,7 @@ import com.cyb.blog.domain.User;
 import com.cyb.blog.entity.Constant;
 import com.cyb.blog.entity.Tips;
 import com.cyb.blog.utils.MyStringUtils;
-import com.cyb.blog.utils.Validate;
+import com.cyb.blog.utils.UserValidate;
 
 @CrossOrigin
 @Controller
@@ -28,7 +28,7 @@ public class TalkController {
 	@RequestMapping(value="/reciveVoice")
 	@ResponseBody
 	public Tips reciveVoice (@RequestParam(value = "file", required = true) MultipartFile pictureFile, HttpSession session) {
-		Validate validate = new Validate();
+		UserValidate validate = new UserValidate();
 		Tips tips = new Tips("false", false);
 		User user = validate.validateAll(tips, Constant.ROLE_ADMIN, null);
 		if(tips.isValidate()) {
@@ -70,7 +70,7 @@ public class TalkController {
 	@RequestMapping(value="/getVoices")
 	@ResponseBody
 	public Tips getVoices (HttpSession session) {
-		Validate validate = new Validate();
+		UserValidate validate = new UserValidate();
 		Tips tips = new Tips("false", false);
 		User user = validate.validateAll(tips, Constant.ROLE_ADMIN, null);
 		if(tips.isValidate()) {
