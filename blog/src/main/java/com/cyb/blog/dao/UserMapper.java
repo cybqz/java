@@ -100,4 +100,6 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
 	Set<String> queryRolesByName(String userName);
+
+	Set<String> queryPermissionByName(String userName);
 }

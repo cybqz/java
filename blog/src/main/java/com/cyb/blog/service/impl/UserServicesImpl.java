@@ -80,4 +80,8 @@ public class UserServicesImpl implements UserServices {
 	public Set<String> queryRolesByName(String userName) {
 		return userMapper.queryRolesByName(userName);
 	}
+	
+	public Set<String> queryPermissionByName(String userName) {
+		return userMapper.queryPermissionByName(userName);
+	}
 }

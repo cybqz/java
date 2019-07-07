@@ -33,6 +33,7 @@ public class CustomRealm extends AuthorizingRealm {
         User user = (User) principalCollection.getPrimaryPrincipal();
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.setRoles(userServices.queryRolesByName(user.getUserName()));
+        simpleAuthorizationInfo.setStringPermissions(userServices.queryPermissionByName(user.getUserName()));
         return simpleAuthorizationInfo;
     }
     /**

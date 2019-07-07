@@ -3,6 +3,8 @@ package com.cyb.blog.service;
 import java.util.List;
 import java.util.Set;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.authz.Permission;
+
 import com.cyb.blog.domain.User;
 import com.cyb.blog.domain.UserExample;
 
@@ -96,4 +98,6 @@ public interface UserServices {
     int updateByPrimaryKey(User record);
 
 	Set<String> queryRolesByName(String userName);
+
+	Set<String> queryPermissionByName(String userName);
 }

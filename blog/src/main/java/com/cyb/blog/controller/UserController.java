@@ -101,7 +101,7 @@ public class UserController {
 		UserValidate validate = new UserValidate();
 		Tips tips = new Tips("false", false);
 		User user = validate.isLoginNoAuthenticated();
-		if(user != null) {
+		if(user == null) {
             try {
             	if(pictureFile != null) {
             		// 图片新名字

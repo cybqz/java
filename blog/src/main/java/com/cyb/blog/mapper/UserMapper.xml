@@ -124,8 +124,27 @@
     from user
     where id = #{id,jdbcType=VARCHAR}
   </select>
+  
   <select id="queryRolesByName" resultType="java.lang.String" parameterType="java.lang.String">
      SELECT r.name FROM role r,user_role ur,user u WHERE r.id = ur.role_id AND u.id = ur.user_id AND u.user_name=#{userName}
+  </select>
+  
+  <select id="queryPermissionByName" resultType="java.lang.String" parameterType="java.lang.String">
+  	SELECT
+	distinct p.NAME 
+	FROM
+		permission p,
+		role_permission rp,
+		role r,
+		user_role ur,
+		USER u
+	WHERE
+		rp.permission_id = p.id
+		AND ur.role_id = rp.role_id
+		AND r.id = ur.role_id
+		AND ur.role_id = rp.role_id
+		AND u.id = ur.user_id
+		AND u.user_name = #{userName}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--
